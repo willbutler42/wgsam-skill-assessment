@@ -1,2 +1,2 @@
 # WGSAM_skill_assessment
-WGSAM skill assessment project
+WGSAM multispecies models skill assessment project based on Atlantis simulations
