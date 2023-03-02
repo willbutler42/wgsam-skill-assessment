@@ -15,7 +15,7 @@ sppLookup <- data.frame(nobaSpp = c("BWH","CAP","GRH","HAD","LRD","MAC","NCO","P
 sppList <- left_join(simBiolPar, sppLookup %>% rename(Code=nobaSpp))
 
 ## Create a gadget directory, define some defaults to use with our queries below
-dirName <- "had01"
+dirName <- "stk01"
 system(paste("rm -r", dirName))
 if(sum(match(list.files(),dirName), na.rm=T)==1){
     print(paste("folder",dirName,"exists"))
@@ -27,18 +27,18 @@ mdb <- mfdb('Barents', db_params=list(dbname="noba"))
 simName <- "NOBA_sacc_38"
     
 year_range <- 40:120
-base_dir <- 'had'
-stock <- 'had'
+base_dir <- 'stk'
+stock <- 'stk'
 stock_names <- c(stock)
-species_name <- 'had'
+species_name <- 'stk'
 
 # define 'default' spatial and temporal aggregation
 defaults <- list(
     year = year_range,
     area = "noba_area",
     timestep = mfdb_timestep_quarterly,
-    species = 'HAD',
-    length=mfdb_interval("len", seq(12, 129, by = 1)),
+    species = 'STK',
+    length=mfdb_interval("len", seq(sppList %>% filter(mfdbSpp=='SAI') %>% .$minLen, sppList %>% filter(mfdbSpp=='STK') %>% .$maxLen, by = 1)),
     age=mfdb_group('age0'=0,'age1'=1,'age2'=2,'age3'=3,'age4'=4,'age5'=5,'age6'=6,'age7'=7,'age8'=8,'age9'=9,'age10'=10,
                    'age11'=11,'age12'=12,'age13'=13,'age14'=14,'age15'=15,'age16'=16,'age17'=17,'age18'=18,'age19'=19,'age20'=20)
 )
