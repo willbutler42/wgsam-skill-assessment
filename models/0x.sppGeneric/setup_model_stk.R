@@ -21,7 +21,10 @@ tmp <- mfdb_sample_count(mdb, c('age','length','species'), list(
            age2 = as.numeric(substring(age,4,5)) + as.numeric(step)/4-0.125) # refine with the actual time of the survey and adj for ageCls
         
 grw.constants <- tmp %>%
-    nls(len2~Linf*(1-exp(-k*(age2-t0))),. , start=list(Linf=190,k=0.2,t0=-2)) %>%
+    nls(len2~Linf*(1-exp(-k*(age2-t0))),. ,
+        nls.control(maxiter = 1000),
+        start=list(Linf=sppList %>% filter(mfdbSpp == defaults$species) %>% .$maxLen,
+                                                       k=0.2, t0=-1)) %>%
     broom::tidy() %>%
     .$estimate
 
@@ -78,8 +81,8 @@ mat.params <- c()
 stk <-
   gadgetstock(stock, gd$dir,missingOkay = TRUE) %>%
   gadget_update('stock',
-                minage = 0,
-                maxage = 20,
+                minage = defaults$age[[1]],
+                maxage = defaults$age[[length(defaults$age)]],
                 minlength = round(sppList %>% filter(mfdbSpp == defaults$species) %>% .$minLen * 0.5),
                 maxlength = round(sppList %>% filter(mfdbSpp == defaults$species) %>% .$maxLen * 1.1),
                 dl = 1,
@@ -97,7 +100,7 @@ stk <-
                 maxlengthgroupgrowth = 3) %>% 
   gadget_update('naturalmortality',
                 ## c(0.5,0.44,0.44)) %>%
-                c(z0,rep(paste0('#',species_name,'.M'),20))) %>%
+                c(z0,rep(paste0('#',species_name,'.M'),defaults$age[[length(defaults$age)]]))) %>%
   gadget_update('initialconditions',
                 ## normalcond = data_frame(age = 1:.[[1]]$maxage,
                 ##                          area = 1,

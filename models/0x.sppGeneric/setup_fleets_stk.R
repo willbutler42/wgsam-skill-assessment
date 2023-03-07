@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# Retrieve catches HAD
+# Retrieve catches STK
 caton <- mfdb_sample_totalweight(mdb, c('species','data_source'), list(
     area          = "noba_area",
     timestep      = mfdb_timestep_quarterly,
@@ -31,7 +31,7 @@ surQ4.catch <-
 
 # ---------------------------------------------------------------------
 ## write to file
-tmp <- gadgetfleet('Modelfiles/fleet_had',gd$dir,missingOkay = TRUE) %>% 
+tmp <- gadgetfleet(paste0('Modelfiles/fleet_',species_name),gd$dir,missingOkay = TRUE) %>% 
   gadget_update('totalfleet',
                 name = paste0('survQ2',species_name),
                 suitability =
@@ -51,7 +51,7 @@ tmp <- gadgetfleet('Modelfiles/fleet_had',gd$dir,missingOkay = TRUE) %>%
                                collapse='\n')),
                 data = surQ4.catch) %>%
   gadget_update('totalfleet',
-                name = 'comhad',
+                name = paste0('com',species_name),
                 ## livesonareas = 1,
                 suitability = 
                   paste0('\n',
