@@ -138,5 +138,5 @@ file.copy(sprintf('%s/run.R','./'),gd$dir)
 
 mfdb_disconnect(mdb)
 
-## set(gd$dir)
+## setwd(gd$dir)
 ## source("run.R")
