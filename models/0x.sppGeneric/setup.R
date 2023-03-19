@@ -112,9 +112,9 @@ read.gadget.parameters(sprintf('%s/params.out',gd$dir)) %>%
   ## init_guess(paste0(stock_names,'.init.[0-9]'),1,0.001,1000,1) %>%
   init_guess(paste0(stock_names,'.rec.scalar'), 1e5,1,1e8,0) %>% 
   init_guess(paste0(stock_names,'.init.scalar'), 1e-4,1e-5,1e8,0) %>%
-  init_guess(paste0(stock_names,'.recl'), 20,10,40,1) %>%
+  init_guess(paste0(stock_names,'.recl'), min(defaults$length)*2,min(defaults$length),min(defaults$length)*3,1) %>%
   init_guess(paste0(stock_names,'.rec.sd'), 4, 0.01, 15,0) %>%
-  init_guess(paste0(stock_names,'.Linf'), grw.constants[1], 60, 140,0) %>%
+  init_guess(paste0(stock_names,'.Linf'), grw.constants[1], grw.constants[1]*0.8, grw.constants[1]*1.2,0) %>%
   init_guess(paste0(stock_names,'.k'), 1e2 * grw.constants[2], 0.1, 100,1) %>%
   init_guess(paste0(stock_names,'.bbin'), 0.9, 0.001, 50, 1) %>% 
   init_guess(paste0(stock_names,'.com.alpha'), 0.9,  0.1, 3, 1) %>% 
