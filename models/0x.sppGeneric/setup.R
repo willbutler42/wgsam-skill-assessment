@@ -11,7 +11,9 @@ sppLookup <- data.frame(nobaSpp = c("BWH","CAP","GRH","HAD","LRD","MAC","NCO","P
                         ageGrpSize = c(1,1,2,2,2,2,2,2,4,2,2),
                         ageMax = c(10,5,20,20,20,20,20,10,40,20,20),
                         minLen = c(13,3,56,12,7,14,20,10,7,25,5),
-                        maxLen = c(47,23,199,129,71,65,138,35,39,196,51))
+                        maxLen = c(47,23,199,129,71,65,138,35,39,196,51),
+                        iniScale = c(1e5,1e5,1e2,1e3,1e4,1e4,1e3,1e4,1e4,1e4,1e4),
+                        recScale = c(1e9,1e7,1e4,1e8,1e8,1e8,1e7,1e8,1e8,1e7,1e9))
 sppList <- left_join(simBiolPar, sppLookup %>% rename(Code=nobaSpp))
 
 spp <- "STK" # select species
@@ -34,13 +36,15 @@ stock <- tolower(spp)
 stock_names <- c(stock)
 species_name <- tolower(spp)
 
+sppListi <- sppList %>% filter(mfdbSpp==spp)
+
 # define 'default' spatial and temporal aggregation
 defaults <- list(
     year = year_range,
     area = "noba_area",
     timestep = mfdb_timestep_quarterly,
     species = spp,
-    length=mfdb_interval("len", seq(sppList %>% filter(mfdbSpp==spp) %>% .$minLen, sppList %>% filter(mfdbSpp==spp) %>% .$maxLen, by = 1)),
+    length=mfdb_interval("len", seq(sppListi %>% .$minLen, sppListi %>% .$maxLen, by = 1)),
     ## # CAP
     ## age=mfdb_group('age0'=0,'age1'=1,'age2'=2,'age3'=3,'age4'=4,'age5'=5)
     ## # WHB
@@ -110,12 +114,13 @@ read.gadget.parameters(sprintf('%s/params.out',gd$dir)) %>%
   ## mutate(value = ifelse(switch == paste0(stock_names,'.rec.1'), 1e-4 * exp(init.rec$number), value),
   ##        optimise = ifelse(switch == paste0(stock_names,'.rec.1'), 0, optimise)) %>%
   ## init_guess(paste0(stock_names,'.init.[0-9]'),1,0.001,1000,1) %>%
-  init_guess(paste0(stock_names,'.rec.scalar'), 1e2,1,1e6,1) %>% 
-  init_guess(paste0(stock_names,'.init.scalar'), 1e1,1e-3,1e3,1) %>%
-  init_guess(paste0(stock_names,'.recl'), min(defaults$length)*2, min(defaults$length), min(defaults$length)*3,1) %>%
+  init_guess(paste0(stock_names,'.rec.scalar'), sppListi %>% .$recScale, 1, 1e7, 0) %>% 
+  init_guess(paste0(stock_names,'.init.scalar'), sppListi %>% .$iniScale, 1e-4, 1e6, 0) %>%
+  init_guess(paste0(stock_names,'.recl'), grw.constants["recl"], grw.constants["k"]*0.2, grw.constants["k"]*2, 0) %>%
+  ## init_guess(paste0(stock_names,'.recl'), min(defaults$length)*2, min(defaults$length), min(defaults$length)*3,1) %>%
   init_guess(paste0(stock_names,'.rec.sd'), init.sigma$stddev[1]*0.9, init.sigma$stddev[1]*0.2, init.sigma$stddev[1]*2,0) %>%
-  init_guess(paste0(stock_names,'.Linf'), grw.constants[1], grw.constants[1]*0.8, grw.constants[1]*1.2,0) %>%
-  init_guess(paste0(stock_names,'.k'), 1e2 * grw.constants[2], 0.1, 100,1) %>%
+  init_guess(paste0(stock_names,'.Linf'), grw.constants["Linf"], grw.constants["Linf"]*0.8, grw.constants["Linf"]*1.2,0) %>%
+  init_guess(paste0(stock_names,'.k'), 1e2 * grw.constants["k"], 0.1, 100,1) %>%
   init_guess(paste0(stock_names,'.bbin'), 0.9, 0.001, 50, 1) %>% 
   init_guess(paste0(stock_names,'.com.alpha'), 0.9,  0.1, 3, 1) %>% 
   init_guess(paste0(stock_names,'.com.l50'), as.numeric(min(substring(ldist.com$length,4,6))), as.numeric(min(substring(ldist.com$length,4,6)))*0.8, as.numeric(min(substring(ldist.com$length,4,6)))*1.6, 1) %>% 
