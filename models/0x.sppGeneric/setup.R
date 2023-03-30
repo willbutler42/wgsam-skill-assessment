@@ -110,8 +110,8 @@ read.gadget.parameters(sprintf('%s/params.out',gd$dir)) %>%
   ## mutate(value = ifelse(switch == paste0(stock_names,'.rec.1'), 1e-4 * exp(init.rec$number), value),
   ##        optimise = ifelse(switch == paste0(stock_names,'.rec.1'), 0, optimise)) %>%
   ## init_guess(paste0(stock_names,'.init.[0-9]'),1,0.001,1000,1) %>%
-  init_guess(paste0(stock_names,'.rec.scalar'), 1e5,1,1e8,0) %>% 
-  init_guess(paste0(stock_names,'.init.scalar'), 1e-4,1e-5,1e8,0) %>%
+  init_guess(paste0(stock_names,'.rec.scalar'), 1e2,1,1e6,1) %>% 
+  init_guess(paste0(stock_names,'.init.scalar'), 1e1,1e-3,1e3,1) %>%
   init_guess(paste0(stock_names,'.recl'), min(defaults$length)*2, min(defaults$length), min(defaults$length)*3,1) %>%
   init_guess(paste0(stock_names,'.rec.sd'), init.sigma$stddev[1]*0.9, init.sigma$stddev[1]*0.2, init.sigma$stddev[1]*2,0) %>%
   init_guess(paste0(stock_names,'.Linf'), grw.constants[1], grw.constants[1]*0.8, grw.constants[1]*1.2,0) %>%
