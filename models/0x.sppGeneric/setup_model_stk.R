@@ -92,9 +92,9 @@ init.rec <- mfdb_sample_count(mdb, c('age'), list(
 ## Z age0
 z0 <- log(exp(init.rec$number)*1e6) - log(init.num %>% filter(age=="age1") %>% .$number)
 
-## M vector (based on Lorenzen eq, see Powers 2014 https://academic.oup.com/icesjms/article/71/7/1629/664136)
+## M vector (based on an adaptation of Lorenzen eq, see Powers 2014 https://academic.oup.com/icesjms/article/71/7/1629/664136)
 ageVec <- 1 : defaults$age[[length(defaults$age)]]
-Minf <- 0.2
+Minf <- exp(1.46-1.01*log(ageVec[length(ageVec)])) # from Hoenig 1983 for fish ln(Z)=1.46-1.01*ln(tmax)
 Ma <- data.frame(age = ageVec,
                  M = Minf*(1-exp(-grw.constants[2]*(ageVec-grw.constants[3])))^(-lw.constants$b[1]*0.305)) %>%
     mutate(M = round(M,3))
