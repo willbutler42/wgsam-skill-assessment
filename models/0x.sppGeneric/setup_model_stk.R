@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# Set the had model
+# Set the stock model
 
 ## length-weight relationship
 lw.constants <- data.frame(a = sppList %>% filter(mfdbSpp == defaults$species) %>% .$WLa,
@@ -19,14 +19,32 @@ tmp <- mfdb_sample_count(mdb, c('age','length','species'), list(
     left_join(sppList %>% rename(species = mfdbSpp)) %>%
     mutate(len2 = as.numeric(substring(length,4,6)),
            age2 = as.numeric(substring(age,4,5)) + as.numeric(step)/4-0.125) # refine with the actual time of the survey and adj for ageCls
-        
+tmp <- tmp %>%
+    group_by(year,area,species,ModSim,age2) %>%
+    summarise(numTot = sum(number)) %>%
+    right_join(tmp) %>%
+    mutate(prop = number/numTot)
+
+library(nls.multstart)
 grw.constants <- tmp %>%
-    nls(len2~Linf*(1-exp(-k*(age2-t0))),. ,
+    ungroup() %>%
+    do(broom::tidy(nls_multstart(len2~Linf*(1-exp(-k*(age2-t0))),. ,
+        modelweights = prop, # needed because they are not individual data
         nls.control(maxiter = 1000),
-        start=list(Linf=sppList %>% filter(mfdbSpp == defaults$species) %>% .$maxLen,
-                                                       k=0.2, t0=-1)) %>%
-    broom::tidy() %>%
+        start_lower=c(Linf=sppList %>% filter(mfdbSpp == defaults$species) %>% .$maxLen * 0.8,
+                      k=0.1, t0=-2),
+        start_upper=c(Linf=sppList %>% filter(mfdbSpp == defaults$species) %>% .$maxLen * 1.2,
+                      k=0.4, t0=1),
+        iter=20))) %>%
     .$estimate
+
+## ggplot() +
+##     geom_point(data=tmp %>% filter(year %in% c(60,80,100)),
+##                aes(age2,len2,size=number)) +
+##     geom_line(data=data.frame(age = seq(defaults$age[[1]], defaults$age[[length(defaults$age)]], length.out=100)) %>%
+##                   mutate(len = grw.constants[1]*(1-exp(-grw.constants[2]*(age-grw.constants[3])))),
+##               aes(age,len), col=2) +
+##     facet_wrap(~year)
 
 ## initial num@age
 init.num <- mfdb_sample_count(mdb, c('age'), list(
@@ -74,6 +92,14 @@ init.rec <- mfdb_sample_count(mdb, c('age'), list(
 ## Z age0
 z0 <- log(exp(init.rec$number)*1e6) - log(init.num %>% filter(age=="age1") %>% .$number)
 
+## M vector (based on Lorenzen eq, see Powers 2014 https://academic.oup.com/icesjms/article/71/7/1629/664136)
+ageVec <- 1 : defaults$age[[length(defaults$age)]]
+Minf <- 0.2
+Ma <- data.frame(age = ageVec,
+                 M = Minf*(1-exp(-grw.constants[2]*(ageVec-grw.constants[3])))^(-lw.constants$b[1]*0.305)) %>%
+    mutate(M = round(M,3))
+ggplot(Ma, aes(age,M)) + geom_point() + geom_line() + ylim(0,NA)
+
 ## initial guess for maturity ogive parameters
 mat.params <- c()
 
@@ -99,8 +125,8 @@ stk <-
                 ## beta = to.gadget.formulae(quote(1e1*had.bbin)),
                 maxlengthgroupgrowth = 3) %>% 
   gadget_update('naturalmortality',
-                ## c(0.5,0.44,0.44)) %>%
-                c(z0,rep(paste0('#',species_name,'.M'),defaults$age[[length(defaults$age)]]))) %>%
+                ## c(z0,rep(paste0('#',species_name,'.M'),defaults$age[[length(defaults$age)]]))) %>%
+                c(Ma$M[1], Ma$M)) %>% # assume M0 = M1
   gadget_update('initialconditions',
                 ## normalcond = data_frame(age = 1:.[[1]]$maxage,
                 ##                          area = 1,
