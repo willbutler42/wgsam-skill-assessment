@@ -110,24 +110,25 @@ callGadget(s=1,log = 'init.log') #ignore.stderr = FALSE,
 
 ## update the input parameters with sane initial guesses
 read.gadget.parameters(sprintf('%s/params.out',gd$dir)) %>% 
-  init_guess(paste0(stock_names,'.rec.[0-9]'),1,0.001,1000,1) %>%
+  init_guess(paste0(stock_names,'.rec.[0-9]'),1,0.1,100,1) %>%
   ## mutate(value = ifelse(switch == paste0(stock_names,'.rec.1'), 1e-4 * exp(init.rec$number), value),
   ##        optimise = ifelse(switch == paste0(stock_names,'.rec.1'), 0, optimise)) %>%
   ## init_guess(paste0(stock_names,'.init.[0-9]'),1,0.001,1000,1) %>%
-  init_guess(paste0(stock_names,'.rec.scalar'), sppListi %>% .$recScale, 1, 1e7, 0) %>% 
-  init_guess(paste0(stock_names,'.init.scalar'), sppListi %>% .$iniScale, 1e-4, 1e6, 0) %>%
-  init_guess(paste0(stock_names,'.recl'), grw.constants["recl"], grw.constants["k"]*0.2, grw.constants["k"]*2, 0) %>%
+  init_guess(paste0(stock_names,'.rec.scalar'), 1e4, 1e3, 1e7, 0) %>% 
+  ## init_guess(paste0(stock_names,'.rec.scalar'), sppListi %>% .$recScale, 1, 1e7, 0) %>% 
+  init_guess(paste0(stock_names,'.init.scalar'), 1e-4, 1e-5, 1e6, 0) %>%
+  init_guess(paste0(stock_names,'.recl'), grw.constants["recl"], grw.constants["recl"]*0.2, grw.constants["recl"]*2, 0) %>%
   ## init_guess(paste0(stock_names,'.recl'), min(defaults$length)*2, min(defaults$length), min(defaults$length)*3,1) %>%
   init_guess(paste0(stock_names,'.rec.sd'), init.sigma$stddev[1]*0.9, init.sigma$stddev[1]*0.2, init.sigma$stddev[1]*2,0) %>%
   init_guess(paste0(stock_names,'.Linf'), grw.constants["Linf"], grw.constants["Linf"]*0.8, grw.constants["Linf"]*1.2,0) %>%
   init_guess(paste0(stock_names,'.k'), 1e2 * grw.constants["k"], 0.1, 100,1) %>%
   init_guess(paste0(stock_names,'.bbin'), 0.9, 0.001, 50, 1) %>% 
   init_guess(paste0(stock_names,'.com.alpha'), 0.9,  0.1, 3, 1) %>% 
-  init_guess(paste0(stock_names,'.com.l50'), as.numeric(min(substring(ldist.com$length,4,6))), as.numeric(min(substring(ldist.com$length,4,6)))*0.8, as.numeric(min(substring(ldist.com$length,4,6)))*1.6, 1) %>% 
+  init_guess(paste0(stock_names,'.com.l50'), mean(as.numeric(substring(ldist.com$length,4,6))), min(as.numeric(substring(ldist.com$length,4,6))), max(as.numeric(substring(ldist.com$length,4,6))), 1) %>% 
   init_guess(paste0(stock_names,'.surQ2.alpha'), 0.9,  0.1, 2, 1) %>% 
-  init_guess(paste0(stock_names,'.surQ2.l50'), as.numeric(min(substring(ldist.survQ2$length,4,6))), as.numeric(min(substring(ldist.survQ2$length,4,6)))*0.8, as.numeric(min(substring(ldist.survQ2$length,4,6)))*1.6, 1) %>% 
+  init_guess(paste0(stock_names,'.surQ2.l50'),  mean(as.numeric(substring(ldist.survQ2$length,4,6))), min(as.numeric(substring(ldist.survQ2$length,4,6))), max(as.numeric(substring(ldist.survQ2$length,4,6))), 1) %>% 
   init_guess(paste0(stock_names,'.surQ4.alpha'), 0.9,  0.1, 2, 1) %>% 
-  init_guess(paste0(stock_names,'.surQ4.l50'), as.numeric(min(substring(ldist.survQ4$length,4,6))), as.numeric(min(substring(ldist.survQ4$length,4,6)))*0.8, as.numeric(min(substring(ldist.survQ4$length,4,6)))*1.6, 1) %>% 
+  init_guess(paste0(stock_names,'.surQ4.l50'), mean(as.numeric(substring(ldist.survQ4$length,4,6))), min(as.numeric(substring(ldist.survQ4$length,4,6))), max(as.numeric(substring(ldist.survQ4$length,4,6))), 1) %>%
   init_guess(paste0(stock_names,'.walpha'), lw.constants$a, 0.001, 0.1, 0) %>% 
   init_guess(paste0(stock_names,'.wbeta'), lw.constants$b, 2, 4, 0) %>% 
   init_guess(paste0(stock_names,'.M'), 0.2, 0.001, 1, 0) %>% 

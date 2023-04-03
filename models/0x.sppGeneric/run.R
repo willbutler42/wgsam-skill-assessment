@@ -112,21 +112,21 @@ ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
 figName <- "F.ps"
 ## cairo_ps(paste(dirFigs,"F.ps", sep="/"))
-  plot(fit, data="res.by.year", type="F") + facet_wrap(~stock) +
+  plot(fit, data="res.by.year", type="F") + facet_wrap(~stock) + ylim(0,NA) +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
 figName <- "total.ps"
 ## cairo_ps(paste(dirFigs,"total.ps", sep="/"))
-  plot(fit, data="res.by.year", type="total") + facet_wrap(~stock) +
+  plot(fit, data="res.by.year", type="total") + facet_wrap(~stock) + ylim(0,NA) +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
 figName <- "rec.ps"
 ## cairo_ps(paste(dirFigs,"rec.ps", sep="/"))
-  plot(fit, data="res.by.year", type="rec") + facet_wrap(~stock) +
+  plot(fit, data="res.by.year", type="rec") + facet_wrap(~stock) + ylim(0,NA) +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
