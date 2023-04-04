@@ -146,8 +146,8 @@ si <- simSurveyIndex %>%
     mutate(units=NULL) %>%
     left_join(sppList) %>%
     spread(variable,value) %>%
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(area = "noba_area")
 
 for(i in si %>% filter(survey=="BTS_spring_allbox_effic1") %>% .$mfdbSpp %>% unique()){
@@ -216,8 +216,8 @@ mfdb_import_survey(mdb, data_source=paste0('index_BTS_fall_',simName),
 tmp <- simSurveyLencomp %>%
     mutate(units=NULL) %>%
     left_join(sppList) %>%
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
@@ -238,8 +238,8 @@ mfdb_import_survey(mdb,
 tmp <- simSurveyAgecomp %>%
     mutate(units=NULL) %>%
     left_join(sppList) %>%
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
@@ -262,8 +262,8 @@ tmp <- simSurveyAgeLencomp %>%
     left_join(sppList) %>%
     mutate(age = ifelse(ageGrpSize == 2, agecl*2-1, # assign the first age in the age class
                  ifelse(ageGrpSize == 4, agecl*4-1, agecl))) %>%                        
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(area = "noba_area")
    
 mfdb_import_survey(mdb,
@@ -285,8 +285,8 @@ mfdb_import_survey(mdb,
 tmp <- simSurveyWtatAge %>%
     mutate(units=NULL) %>%
     left_join(sppList) %>%
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
@@ -309,8 +309,8 @@ tmp <- simSurveyDietcomp %>%
     left_join(sppList) %>%
     mutate(age = ifelse(ageGrpSize == 2, agecl*2-1, # assign the first age in the age class
                  ifelse(ageGrpSize == 4, agecl*4-1, agecl))) %>%                        
-    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",10,
-                   ifelse(survey=="BTS_spring_allbox_effic1",4,NA))) %>%
+    mutate(month = ifelse(survey=="BTS_fall_allbox_effic1",8,
+                   ifelse(survey=="BTS_spring_allbox_effic1",3,NA))) %>%
     mutate(predID = paste(mfdbSpp,year,month,age,sep="_")) %>%
     mutate(area = "noba_area")
 
@@ -322,8 +322,10 @@ tmp <- sppList %>%
     group_by(ModSim,year,month,area,survey,predID,mfdbSpp,agecl,age,mfdbPrey) %>%
     summarise(value=sum(value))
 
-## ggplot(tmp %>% filter(month==10 & year %in% c(60,80,100))) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_grid(mfdbSpp~year)
+## ggplot(tmp %>% filter(month==8 & year %in% c(60,80,100))) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_grid(mfdbSpp~year)
 ## ggplot(tmp %>% filter(mfdbSpp=="RED" & year %in% c(60,80,100))) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_grid(month~year)
+## ggplot(tmp %>% filter(mfdbSpp=="RED")) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_wrap(month~year)
+## ggplot(tmp %>% filter(mfdbSpp=="COD")) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_wrap(month~year)
 ## p1 <- ggplot(tmp %>% filter(mfdbSpp=="COD" & year %in% c(60,80,100))) + geom_bar(aes(agecl,value,fill=mfdbPrey), stat="identity") + facet_grid(month~year)
 ## ggsave("cod_diet_NOBA_sacc_38.png", p1, device="png", width=12)
 
@@ -378,7 +380,9 @@ tmp <- simStartPars %>%
     rename(age = agecl) %>%
     mutate(year=40, month = 1) %>% # *** verify that initial year is 40
     mutate(area = "noba_area")
-   
+
+ggplot(tmp %>% filter(age!=1)) + geom_point(aes(age,value)) + facet_wrap(~mfdbSpp, scale="free") + ylim(0,NA)
+
 mfdb_import_survey(mdb,
     data_source = paste0('anumb_init_',simName),
     data.frame(
