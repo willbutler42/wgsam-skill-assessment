@@ -1,0 +1,13 @@
+; main file for gadget - created in Rgadget
+; WGTS/main.init - Mon Apr  3 17:05:55 2023
+timefile Modelfiles/time
+areafile Modelfiles/area
+printfiles ; no printfile supplied
+[stock]
+stockfiles had
+[tagging]
+[otherfood]
+[fleet]
+fleetfiles Modelfiles/fleet_had
+[likelihood]
+likelihoodfiles WGTS/likelihood.init

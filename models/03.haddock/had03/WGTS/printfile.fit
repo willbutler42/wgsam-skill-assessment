@@ -1,0 +1,108 @@
+; gadget printfile, created in 2023-04-03
+[component]
+type	likelihoodsummaryprinter
+printfile	WGTS/out.fit/likelihoodsummary
+;
+[component]
+type	likelihoodprinter
+likelihood	alk.had.surQ2
+printfile	WGTS/out.fit/alk.had.surQ2
+;
+[component]
+type	likelihoodprinter
+likelihood	alk.had.surQ4
+printfile	WGTS/out.fit/alk.had.surQ4
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.had.com
+printfile	WGTS/out.fit/ldist.had.com
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.had.surQ2
+printfile	WGTS/out.fit/ldist.had.surQ2
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.had.surQ4
+printfile	WGTS/out.fit/ldist.had.surQ4
+;
+[component]
+type	likelihoodprinter
+likelihood	siQ2.had
+printfile	WGTS/out.fit/siQ2.had
+;
+[component]
+type	likelihoodprinter
+likelihood	siQ4.had
+printfile	WGTS/out.fit/siQ4.had
+;
+[component]
+type	stockstdprinter
+stockname	had
+printfile	WGTS/out.fit/had.std
+printatstart 1
+yearsandsteps	all	1
+;
+[component]
+type	stockprinter
+stocknames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.allages.agg
+lenaggfile	WGTS/print.aggfiles/had.len.agg
+printfile	WGTS/out.fit/had.full
+printatstart	1
+yearsandsteps	all	1
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ2had survQ4had comhad
+preynames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.age.agg
+lenaggfile	WGTS/print.aggfiles/had.alllen.agg
+printfile	WGTS/out.fit/had.prey
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ2had
+preynames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.allages.agg
+lenaggfile	WGTS/print.aggfiles/had.len.agg
+printfile	WGTS/out.fit/had.prey.survQ2had
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ4had
+preynames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.allages.agg
+lenaggfile	WGTS/print.aggfiles/had.len.agg
+printfile	WGTS/out.fit/had.prey.survQ4had
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	comhad
+preynames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.allages.agg
+lenaggfile	WGTS/print.aggfiles/had.len.agg
+printfile	WGTS/out.fit/had.prey.comhad
+yearsandsteps	all all
+;
+[component]
+type	stockprinter
+stocknames	had
+areaaggfile	WGTS/print.aggfiles/had.area.agg
+ageaggfile	WGTS/print.aggfiles/had.rec.age.agg
+lenaggfile	WGTS/print.aggfiles/had.alllen.agg
+printfile	WGTS/out.fit/had.recruitment
+printatstart	0
+yearsandsteps	all 4
+;
+;
