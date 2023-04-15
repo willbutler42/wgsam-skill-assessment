@@ -2,7 +2,7 @@
 # Retrieve catches STK
 caton <- mfdb_sample_totalweight(mdb, c('species','data_source'), list(
     area          = "noba_area",
-    timestep      = mfdb_timestep_quarterly,
+    timestep      = defaults$timestep,
     year          = year_range,
     species       = defaults$species,
     sampling_type = 'LND',
@@ -21,35 +21,35 @@ com.catch <- structure(rbind(caton),
 
 # ---------------------------------------------------------------------
 # make spring and fall surveys
-surQ2.catch <- 
-  structure(rbind(data.frame(year=year_range,step=2,area=1,fleet=paste0('survQ2',species_name),number=1)),
+surQ1.catch <- 
+  structure(rbind(data.frame(year=year_range,step=1,area=1,fleet=paste0('survQ1',species_name),number=1)),
             area_group = mfdb_group(`1` = 1))
 
-surQ4.catch <- 
-  structure(rbind(data.frame(year=year_range,step=4,area=1,fleet=paste0('survQ4',species_name),number=1)),
+surQ3.catch <- 
+  structure(rbind(data.frame(year=year_range,step=3,area=1,fleet=paste0('survQ3',species_name),number=1)),
             area_group = mfdb_group(`1` = 1))
 
 # ---------------------------------------------------------------------
 ## write to file
 tmp <- gadgetfleet(paste0('Modelfiles/fleet_',species_name),gd$dir,missingOkay = TRUE) %>% 
   gadget_update('totalfleet',
-                name = paste0('survQ2',species_name),
+                name = paste0('survQ1',species_name),
                 suitability =
                 paste0('\n',
                          paste(stock_names,
                                'function','exponentiall50',
-                               paste0('#',species_name,'.surQ2.alpha'), paste0('#',species_name,'.surQ2.l50'),
+                               paste0('#',species_name,'.surQ1.alpha'), paste0('#',species_name,'.surQ1.l50'),
                                collapse='\n')),
-                data = surQ2.catch) %>%
+                data = surQ1.catch) %>%
   gadget_update('totalfleet',
-                name = paste0('survQ4',species_name),
+                name = paste0('survQ3',species_name),
                 suitability =
                 paste0('\n',
                          paste(stock_names,
                                'function','exponentiall50',
-                               paste0('#',species_name,'.surQ4.alpha'), paste0('#',species_name,'.surQ4.l50'),
+                               paste0('#',species_name,'.surQ3.alpha'), paste0('#',species_name,'.surQ3.l50'),
                                collapse='\n')),
-                data = surQ4.catch) %>%
+                data = surQ3.catch) %>%
   gadget_update('totalfleet',
                 name = paste0('com',species_name),
                 ## livesonareas = 1,

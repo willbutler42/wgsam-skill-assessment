@@ -5,11 +5,11 @@
 lw.constants <- data.frame(a = sppListi %>% .$WLa,
                            b = sppListi %>% .$WLb)
 
-
 ## Growth
 tmp <- mfdb_sample_count(mdb, c('age','length','species'), list(
        area          = defaults$area,
-       timestep      = mfdb_timestep_quarterly,
+       timestep      = mfdb_group('1'=1:3),
+       ## timestep      = mfdb_unaggregtaed(),
        year          = defaults$year,
        sampling_type = 'RES',
        data_source   = paste0('aldist_survey_',simName),
@@ -18,7 +18,8 @@ tmp <- mfdb_sample_count(mdb, c('age','length','species'), list(
        age           = defaults$age))[[1]] %>%
     left_join(sppListi %>% rename(species = mfdbSpp)) %>%
     mutate(len2 = as.numeric(substring(length,4,6)),
-           age2 = as.numeric(substring(age,4,5)) + as.numeric(step)/4-0.125) # refine with the actual time of the survey and adj for ageCls
+           age2 = as.numeric(substring(age,4,5)) + as.numeric(step)/4-1/(4*2)) # refine with the actual time of the survey and adj for ageCls
+           ## age2 = as.numeric(substring(age,4,5)) + as.numeric(step)/12-1/(12*2)) # refine with the actual time of the survey and adj for ageCls
 tmp <- tmp %>%
     group_by(year,area,species,ModSim,age2) %>%
     summarise(numTot = sum(number)) %>%
@@ -37,7 +38,7 @@ grw.constants <- tmp %>%
                       k=0.4, t0=1),
         iter=20))) %>%
     .$estimate
-grw.constants <- c(grw.constants, grw.constants[1]*(1-exp(-grw.constants[2] * ((sppListi$SpawnMonth/12-1/12/2)-grw.constants[3]))))
+grw.constants <- c(grw.constants, grw.constants[1]*(1-exp(-grw.constants[2] * ((sppListi$RecruitMonth/12-1/12/2)-grw.constants[3]))))
 names(grw.constants) <- c("Linf","k","t0","recl")
 
 ## ggplot() +
@@ -46,14 +47,18 @@ names(grw.constants) <- c("Linf","k","t0","recl")
 ##     geom_line(data=data.frame(age = seq(defaults$age[[1]], defaults$age[[length(defaults$age)]], length.out=100)) %>%
 ##                   mutate(len = grw.constants["Linf"]*(1-exp(-grw.constants["k"]*(age-grw.constants["t0"])))),
 ##               aes(age,len), col=2) +
-##     geom_vline(xintercept = (sppListi$SpawnMonth/12-1/12/2), color = 3) +
+##     geom_vline(xintercept = (sppListi$RecruitMonth/12-1/12/2), color = 3) +
 ##     geom_hline(yintercept = grw.constants["recl"], color = 3) +
 ##     facet_wrap(~year)
+
+## maxlengthgroupgrowth as x3 the mean length growth from recl
+## dL = (Linf-Li)*(1-exp(-Kdt))
+nL.max <- 3*floor((grw.constants["Linf"]-grw.constants["recl"]) * (1-exp(-grw.constants["k"]*0.25)))
 
 ## initial num@age
 init.num <- mfdb_sample_count(mdb, c('age'), list(
       area            = defaults$area,
-      timestep        = mfdb_timestep_quarterly,
+      timestep        = defaults$timestep,
       year            = year_range,
       species         = defaults$species, 
       age             = defaults$age,
@@ -66,7 +71,7 @@ init.num <- mfdb_sample_count(mdb, c('age'), list(
 ## initial conditions
 init.sigma <- mfdb_sample_meanlength_stddev(mdb, c('age','species'), list(
     area            = defaults$area,
-    timestep        = mfdb_timestep_quarterly,
+    timestep        = defaults$timestep,
     year            = year_range,
     species         = defaults$species, 
     age             = defaults$age,
@@ -86,12 +91,12 @@ init.sigma <- mfdb_sample_meanlength_stddev(mdb, c('age','species'), list(
 ## initial recruitment
 init.rec <- mfdb_sample_count(mdb, c('age'), list(
       area            = defaults$area,
-      timestep        = mfdb_timestep_quarterly,
+      timestep        = defaults$timestep,
       year            = year_range[1]-1,
       species         = defaults$species, 
       age             = defaults$age,
       sampling_type   = 'RES',
-      data_source     = paste0('logrec_init_',simName)))[[1]]
+      data_source     = paste0('logrec_avg_',simName)))[[1]]
 
 ## Z age0 ----> Z = (log(N0)-log(N1))/dt
 z0 <- (log(exp(init.rec$number)*1e6) - log(init.num %>% filter(age=="age1") %>% .$number))/(1-(sppListi$SpawnMonth/12-1/12/2))
@@ -125,35 +130,13 @@ stk <-
                                    k = paste0('(* 0.01 #',species_name,'.k)'),
                                    alpha = paste0('(* 1e-3 #',species_name, ".walpha)"),
                                    beta =  paste0('#',species_name, ".wbeta")),
-                beta = paste0('(* 10 #',species_name,'.bbin)'),
-                ## beta = to.gadget.formulae(quote(1e1*had.bbin)),
-                maxlengthgroupgrowth = 3) %>% 
+                beta = paste0('(* 1e0 #',species_name,'.bbin)'),
+                maxlengthgroupgrowth = nL.max) %>% 
   gadget_update('naturalmortality',
                 ## c(z0,rep(paste0('#',species_name,'.M'),defaults$age[[length(defaults$age)]]))) %>%
                 c(Ma$M[1], Ma$M)) %>% # assume M0 = M1
                 ## c(z0, Ma$M)) %>%
   gadget_update('initialconditions',
-                ## normalcond = data_frame(age = 1:.[[1]]$maxage,
-                ##                          area = 1,
-                ##                          age.factor = parse(text=sprintf(paste0('exp(-1*(had.M+had.init.F)*%1$s)*had.init.%1$s'), age)) %>% 
-                ##                            map(to.gadget.formulae) %>% 
-                ##                            unlist(),   
-                ##                          area.factor = '#had.init.scalar',
-                ##                          ## mean = von_b_formula(age,linf='had.Linf',k='had.k',recl='had.recl'),
-                ##                          mean = parse(text=sprintf('had.Linf*(1-exp(-1*(0.01*had.k)*(%1$s-(0.5+log(1-had.recl/had.Linf)/(0.01* had.k)))))',age)) %>% # notice [... -(0.5+log ...] so length scaled considering that rec is in timestep 3
-                ##                              map(to.gadget.formulae) %>% 
-                ##                              unlist(),   
-                ##                          stddev = init.sigma$stddev[age],
-                ##                          relcond = 1)) %>%
-
-                ## normalcond = data_frame(age = as.numeric(substring(init.sigma$age,4,5)),
-                ##                         area = 1,
-                ##                         age.factor = init.sigma$number,   
-                ##                         area.factor = '#had.init.scalar',
-                ##                         mean = init.sigma$mean,
-                ##                         stddev = init.sigma$stddev,
-                ##                         relcond = 1)) %>%
-                
                 normalcond = data_frame(age = as.numeric(substring(init.num$age,4,5)),
                                         area = 1,
                                         age.factor = init.num$number,   
@@ -163,12 +146,10 @@ stk <-
                                              unlist(),
                                         stddev = seq(min(init.sigma$stddev), max(init.sigma$stddev), length.out=length(defaults$age)-1),
                                         relcond = 1)) %>% 
-  ## does"something" updates should also allow for other names, e.g. doesrenew -> recruitment etc..
   gadget_update('iseaten',1) %>% 
   gadget_update('doesrenew',
                 normalparam = data_frame(year = year_range,
-                                         ## step = 4,
-                                         step = cut(sppListi$SpawnMonth, c(1,3,6,9,12), labels=1:4, include.lowest=T),
+                                         step = cut(sppListi$RecruitMonth, c(1,3,6,9,12), labels=1:4, include.lowest=T),
                                          area = 1,
                                          age = .[[1]]$minage,
                                          number = parse(text=sprintf(paste0(species_name,'.rec.scalar*',species_name,'.rec.%s'),year)) %>% 
