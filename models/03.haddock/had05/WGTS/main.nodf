@@ -1,0 +1,13 @@
+; main file for gadget - created in Rgadget
+; WGTS/main.nodf - Fri Apr 14 15:33:14 2023
+timefile Modelfiles/time
+areafile Modelfiles/area
+printfiles ; no printfile supplied
+[stock]
+stockfiles had
+[tagging]
+[otherfood]
+[fleet]
+fleetfiles Modelfiles/fleet_had
+[likelihood]
+likelihoodfiles WGTS/likelihood.nodf
