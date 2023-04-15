@@ -18,7 +18,7 @@ si_spring <- mfdb_sample_totalweight(mdb, c('length'), list(
 ## si_spring <- mfdb_survey_index_mean(mdb, c('length'), list(
 ## si_spring <- mfdb_sample_count(mdb, c('data_source'), list(
     area          = defaults$area,
-    timestep      = mfdb_timestep_quarterly,
+    timestep      = defaults$timestep,
     year          = defaults$year,
     ## index_type   = paste0('BTS_spring_',defaults$species),
     ## data_source   = paste0('BTS_spring_',simName,"_",defaults$species),
@@ -39,7 +39,7 @@ si_spring[1:4,]
 # Query index abundance surveys Fall
 si_fall <- mfdb_sample_totalweight(mdb, c('length'), list(
     area          = defaults$area,
-    timestep      = mfdb_timestep_quarterly,
+    timestep      = defaults$timestep,
     year          = defaults$year,
     data_source   = paste0('index_BTS_fall_',simName),
     species       = defaults$species,

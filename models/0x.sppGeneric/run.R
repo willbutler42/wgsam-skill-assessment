@@ -15,7 +15,7 @@ source("~/../valerio/Share/Gadget/Rscripts/ggplot_AgeLenDistributionStock.R")
 
 tmp <- gadget.iterative(rew.sI=TRUE,
                         grouping=list(
-                          sind=c('siQ2.had','siQ4.had')),
+                          sind=c('siQ1.had','siQ3.had')),
                         params.file='params.in',
                         optinfofile='optinfofile',
                         wgts='WGTS')
@@ -23,9 +23,9 @@ tmp <- gadget.iterative(rew.sI=TRUE,
 # --------
 ## change the likelihood weight for the survey indicex x100 and refit the model
 lkh <- read.gadget.file("./", file_name="WGTS/likelihood.final", file_type="likelihood")
-i <- which(sapply(lkh,function(x){x$name}) == "siQ2.had")
+i <- which(sapply(lkh,function(x){x$name}) == "siQ1.had")
 lkh[[i]]$weight <- lkh[[i]]$weight * 100
-i <- which(sapply(lkh,function(x){x$name}) == "siQ4.had")
+i <- which(sapply(lkh,function(x){x$name}) == "siQ3.had")
 lkh[[i]]$weight <- lkh[[i]]$weight * 100
 attributes(lkh)$file_name <- "likelihood.final1"
 lkh %>%
@@ -44,7 +44,7 @@ write.gadget.parameters(params,file='params.final20')
 
 tmp <- gadget.iterative(rew.sI=TRUE,
                         grouping=list(
-                          sind=c('siQ2.had','siQ4.had')),
+                          sind=c('siQ1.had','siQ3.had')),
                         params.file='params.final20',
                         optinfofile='optinfofile',
                         main = "main2",
@@ -78,6 +78,8 @@ ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 figName <- "sidat_xy.ps"
 ## cairo_ps(paste(dirFigs,, sep="/"))
   plot(fit, data = "sidat", type = "x-y") +
+  scale_y_continuous(trans='log10') +
+  scale_x_continuous(trans='log10') +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
@@ -146,7 +148,7 @@ figName <- "suitability.ps"
 ##   ggRunName() + ggRunNameSize(6) +
 ##   ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 ggplot(fit$suitability %>% filter(stock %in% c("had") & year == 80 &
-                                  step %in% ifelse(substring(fleet,1,6)=="survQ2",2,4))) +
+                                  step %in% ifelse(substring(fleet,1,6)=="survQ1",1,3))) +
     geom_line(aes(length,suit,col=fleet)) +
     ## xlim(8,15) +
     facet_wrap(stock~., scales="free_x") +
@@ -163,26 +165,26 @@ figName <- "ldist_had_com.ps"
   ggRunName() + ggRunNameSize(6)
   ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "ldist_had_survQ2.ps"
-  tmp$ldist.had.surQ2 +
+figName <- "ldist_had_survQ1.ps"
+  tmp$ldist.had.surQ1 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
   ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "ldist_had_survQ4.ps"
-  tmp$ldist.had.surQ4 +
+figName <- "ldist_had_survQ3.ps"
+  tmp$ldist.had.surQ3 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "alk_had_survQ2.ps"
-  tmp$alk.had.surQ2 +
+figName <- "alk_had_survQ1.ps"
+  tmp$alk.had.surQ1 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "alk_had_survQ4.ps"
-  tmp$alk.had.surQ4 +
+figName <- "alk_had_survQ3.ps"
+  tmp$alk.had.surQ3 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
@@ -193,14 +195,14 @@ ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 ##   ggRunName() + ggRunNameSize(6)
 ## ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-## figName <- "adist_had_survQ2.ps"
-##   tmp$adist.had.surQ2 +
+## figName <- "adist_had_survQ1.ps"
+##   tmp$adist.had.surQ1 +
 ##   labs(subtitle=figName) +
 ##   ggRunName() + ggRunNameSize(6)
 ## ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-## figName <- "adist_had_survQ4.ps"
-##   tmp$adist.had.surQ4 +
+## figName <- "adist_had_survQ3.ps"
+##   tmp$adist.had.surQ3 +
 ##   labs(subtitle=figName) +
 ##   ggRunName() + ggRunNameSize(6)
 ## ggsave(paste(dirFigs,figName, sep="/"), device="ps")
@@ -224,14 +226,14 @@ ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 grplot <- plot(fit, data='catchdist.fleets', type='growth')
   names(grplot)
 
-figName <- "growth_had_survQ2.ps"
-  grplot$alk.had.surQ2 +
+figName <- "growth_had_survQ1.ps"
+  grplot$alk.had.surQ1 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "growth_had_survQ4.ps"
-  grplot$alk.had.surQ4 +
+figName <- "growth_had_survQ3.ps"
+  grplot$alk.had.surQ3 +
   labs(subtitle=figName) +
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
@@ -304,15 +306,15 @@ ggplot(fitL$sidat) +
 
 source("~/../valerio/Share/Gadget/Rscripts/ggplot_AgeLenDistribution.R")
 ggLenDist(Gfit=fitL, compName="ldist.had.com", yrs=50:60)
-ggLenDist(Gfit=fitL, compName="ldist.had.surQ2", yrs=50:60)
-ggLenDist(Gfit=fitL, compName="ldist.had.surQ4", yrs=50:60)
+ggLenDist(Gfit=fitL, compName="ldist.had.surQ1", yrs=50:60)
+ggLenDist(Gfit=fitL, compName="ldist.had.surQ3", yrs=50:60)
 ggAgeDist(Gfit=fitL, compName="adist.had.com", yrs=50:60)
-ggAgeDist(Gfit=fitL, compName="adist.had.surQ2", yrs=50:60)
-ggAgeDist(Gfit=fitL, compName="adist.had.surQ4", yrs=50:60)
+ggAgeDist(Gfit=fitL, compName="adist.had.surQ1", yrs=50:60)
+ggAgeDist(Gfit=fitL, compName="adist.had.surQ3", yrs=50:60)
 
 # selection pattern
 tmp <- fitL$suitability %>% filter(stock %in% c("had") & year == 80 &
-                                  step %in% ifelse(substring(fleet,1,6)=="survQ2",2,4))
+                                  step %in% ifelse(substring(fleet,1,6)=="survQ1",2,4))
 ggplot(tmp) + geom_line(aes(length,suit,group=model,col=model)) + facet_wrap(~fleet, scale="free_x")
 
 # compare LH scores

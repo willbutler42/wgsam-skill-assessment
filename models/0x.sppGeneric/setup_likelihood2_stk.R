@@ -1,5 +1,5 @@
 
-gadgetlikelihood('likelihood_had',gd$dir,missingOkay = TRUE) %>% 
+gadgetlikelihood(paste0('likelihood_',species_name),gd$dir,missingOkay = TRUE) %>% 
   ## Write a penalty component to the likelihood file
   gadget_update("penalty",
                 name = "bounds",
@@ -15,43 +15,43 @@ gadgetlikelihood('likelihood_had',gd$dir,missingOkay = TRUE) %>%
                 weight = "10") %>%
                     
   gadget_update("catchdistribution",
-                name = "adist.had.com",
+                name = paste0('adist.',species_name,'.com'),
                 weight = 1,
-                aggregationlevel = 1,
+                aggregationlevel = 0,
                 data = adist.com,
-                fleetnames = "comhad",
+                fleetnames = paste0('com',species_name),
                 stocknames = stock_names) %>%
     
   gadget_update("catchdistribution",
-                name = "adist.had.surQ2",
+                name = paste0('adist.',species_name,'.surQ1'),
                 weight = 1,
-                data = adist.survQ2,
-                fleetnames = "survQ2had",
+                data = adist.survQ1,
+                fleetnames = paste0('survQ1',species_name),
                 stocknames = stock_names) %>%
 
   gadget_update("catchdistribution",
-                name = "adist.had.surQ4",
+                name = paste0('adist.',species_name,'.surQ3'),
                 weight = 1,
-                data = adist.survQ4,
-                fleetnames = "survQ4had",
+                data = adist.survQ3,
+                fleetnames = paste0('survQ3',species_name),
                 stocknames = stock_names) %>%
 
   gadget_update("catchdistribution",
-                name = "alk.had.surQ2",
+                name = paste0('alk.',species_name,'.surQ1'),
                 weight = 1,
-                data = aldist.survQ2,
-                fleetnames = "survQ2had",
+                data = aldist.survQ1,
+                fleetnames = paste0('survQ1',species_name),
                 stocknames = stock_names) %>%
 
-  gadget_update("catchdistribution",
-                name = "alk.had.surQ4",
-                weight = 1,
-                data = aldist.survQ4,
-                fleetnames = "survQ4had",
-                stocknames = stock_names) %>%
+  ## gadget_update("catchdistribution",
+  ##               name = paste0('alk.',species_name,'.surQ3'),
+  ##               weight = 1,
+  ##               data = aldist.survQ3,
+  ##               fleetnames = paste0('survQ3',species_name),
+  ##               stocknames = stock_names) %>%
     
   gadget_update("surveyindices",
-                name = "siQ2.had",
+                name = paste0('siQ1.',species_name),
                 weight = 1,
                 data = si_spring,
                 sitype = "lengths",
@@ -62,7 +62,7 @@ gadgetlikelihood('likelihood_had',gd$dir,missingOkay = TRUE) %>%
                 stocknames = stock_names) %>%
 
   gadget_update("surveyindices",
-                name = "siQ4.had",
+                name = paste0('siQ3.',species_name),
                 weight = 1,
                 data = si_fall,
                 sitype = "lengths",

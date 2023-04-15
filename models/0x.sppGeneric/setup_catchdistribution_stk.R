@@ -17,7 +17,7 @@ names(aa) <- c("all","all")
 # Query commercial age distribution
 adist.com <- mfdb_sample_count(mdb, c('age','length'), list(
     area            = defaults$area,
-    timestep      = mfdb_timestep_quarterly,
+    timestep      = defaults$timestep,
     year          = defaults$year,
     sampling_type = 'LND',
     data_source   = paste0('adist_catch_',simName),
@@ -32,10 +32,10 @@ adist.com <- mfdb_sample_count(mdb, c('age','length'), list(
 
 # replicate same adist for all quarters
 # ***hack to avoid error in the likelihood which is aggregated over the year***
-adist.com <- bind_rows(adist.com %>% mutate(step='1'),
-                       adist.com,
-                       adist.com %>% mutate(step='3'),
-                       adist.com %>% mutate(step='4'))
+## adist.com <- bind_rows(adist.com %>% mutate(step='1'),
+##                        adist.com,
+##                        adist.com %>% mutate(step='3'),
+##                        adist.com %>% mutate(step='4'))
 
 ## ggplot(filter(adist.com,year %in% 50:60)) +
 ##     geom_bar(aes(age,number), stat="identity") +
@@ -43,9 +43,9 @@ adist.com <- bind_rows(adist.com %>% mutate(step='1'),
 
 # ---------------------------------------------------------------------
 # Query survey age distribution
-adist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
+adist.survQ1 <- mfdb_sample_count(mdb, c('age','length'), list(
     area            = defaults$area,
-    timestep      = mfdb_group('2'=4:6),
+    timestep      = mfdb_group('1'=1:3),
     ## timestep      = mfdb_timestep_quarterly,
     year          = defaults$year,
     sampling_type = 'RES',
@@ -54,9 +54,9 @@ adist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
     length        = ll,
     age           = defaults$age))[[1]]
 
-adist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
+adist.survQ3 <- mfdb_sample_count(mdb, c('age','length'), list(
     area            = defaults$area,
-    timestep      = mfdb_group('4'=10:12),
+    timestep      = mfdb_group('3'=7:9),
     ## timestep      = mfdb_timestep_quarterly,
     year          = defaults$year,
     sampling_type = 'RES',
@@ -69,7 +69,7 @@ adist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
 # Query commercial length distribution
 ldist.com <- mfdb_sample_count(mdb, c('age','length'), list(
     area          = defaults$area,
-    timestep      = mfdb_timestep_quarterly,
+    timestep      = defaults$timestep,
     year          = defaults$year,
     sampling_type = 'LND',
     data_source   = paste0('ldist_catch_',simName),
@@ -92,9 +92,9 @@ ldist.com <- bind_rows(ldist.com %>% mutate(step='1'),
 
 # ---------------------------------------------------------------------
 # Query survey length distribution
-ldist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
+ldist.survQ1 <- mfdb_sample_count(mdb, c('age','length'), list(
     area          = defaults$area,
-    timestep      = mfdb_group('2'=4:6),
+    timestep      = mfdb_group('1'=1:3),
     ## timestep      = mfdb_timestep_quarterly,
     year          = defaults$year,
     sampling_type = 'RES',
@@ -103,9 +103,9 @@ ldist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
     length        = defaults$length,
     age           = aa))[[1]]
 
-ldist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
+ldist.survQ3 <- mfdb_sample_count(mdb, c('age','length'), list(
     area          = defaults$area,
-    timestep      = mfdb_group('4'=10:12),
+    timestep      = mfdb_group('3'=7:9),
     year          = defaults$year,
     sampling_type = 'RES',
     data_source   = paste0('ldist_survey_',simName),
@@ -115,9 +115,9 @@ ldist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
 
 # ---------------------------------------------------------------------
 # Query survey age-length distribution
-aldist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
+aldist.survQ1 <- mfdb_sample_count(mdb, c('age','length'), list(
     area          = defaults$area,
-    timestep      = mfdb_group('2'=4:6),
+    timestep      = mfdb_group('1'=1:3),
     ## timestep      = mfdb_timestep_quarterly,
     year          = defaults$year,
     sampling_type = 'RES',
@@ -127,9 +127,9 @@ aldist.survQ2 <- mfdb_sample_count(mdb, c('age','length'), list(
     age           = ageCls))[[1]]
     ## age           = defaults$age))[[1]]
 
-aldist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
+aldist.survQ3 <- mfdb_sample_count(mdb, c('age','length'), list(
     area          = defaults$area,
-    timestep      = mfdb_group('4'=10:12),
+    timestep      = mfdb_group('3'=7:9),
     ## timestep      = mfdb_timestep_quarterly,
     year          = defaults$year,
     sampling_type = 'RES',
@@ -139,7 +139,7 @@ aldist.survQ4 <- mfdb_sample_count(mdb, c('age','length'), list(
     age           = ageCls))[[1]]
     ## age           = defaults$age))[[1]]
 
-## ggplot(aldist.survQ2 %>% filter(year %in% 50:60) %>%
+## ggplot(aldist.survQ1 %>% filter(year %in% 50:60) %>%
 ##        mutate(age=as.numeric(substring(age,4,5)),
 ##               length=as.numeric(substring(length,4,6)))) +
 ##     geom_point(aes(age,length,size=number)) +
