@@ -31,12 +31,11 @@ grw.constants <- tmp %>%
     ungroup() %>%
     do(broom::tidy(nls_multstart(len2~Linf*(1-exp(-k*(age2-t0))),. ,
         modelweights = prop, # needed because they are not individual data
-        nls.control(maxiter = 1000),
         start_lower=c(Linf=sppListi %>% .$maxLen * 0.8,
                       k=0.1, t0=-2),
         start_upper=c(Linf=sppListi %>% .$maxLen * 1.2,
                       k=0.4, t0=1),
-        iter=20))) %>%
+        iter=500))) %>%
     .$estimate
 grw.constants <- c(grw.constants, grw.constants[1]*(1-exp(-grw.constants[2] * ((sppListi$RecruitMonth/12-1/12/2)-grw.constants[3]))))
 names(grw.constants) <- c("Linf","k","t0","recl")
