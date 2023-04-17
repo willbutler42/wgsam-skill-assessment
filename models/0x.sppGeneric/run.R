@@ -5,9 +5,9 @@ library(gridExtra)
 
 ## rm(list=ls())
 
-source("~/../valerio/Share/Gadget/Rscripts/ggdata_coverage.R")
-source("~/../valerio/Share/Gadget/Rscripts/add_captionModel.R")
-source("~/../valerio/Share/Gadget/Rscripts/ggplot_AgeLenDistributionStock.R")
+source("../../utils/ggdata_coverage.R")
+source("../../add_captionModel.R")
+source("../../ggplot_AgeLenDistributionStock.R")
 
 ## setwd(gd$dir)
 
@@ -183,11 +183,11 @@ figName <- "alk_had_survQ1.ps"
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "alk_had_survQ3.ps"
-  tmp$alk.had.surQ3 +
-  labs(subtitle=figName) +
-  ggRunName() + ggRunNameSize(6)
-ggsave(paste(dirFigs,figName, sep="/"), device="ps")
+## figName <- "alk_had_survQ3.ps"
+##   tmp$alk.had.surQ3 +
+##   labs(subtitle=figName) +
+##   ggRunName() + ggRunNameSize(6)
+## ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
 ## figName <- "adist_had_com.ps"
 ##   tmp$adist.had.com +
@@ -232,11 +232,11 @@ figName <- "growth_had_survQ1.ps"
   ggRunName() + ggRunNameSize(6)
 ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
-figName <- "growth_had_survQ3.ps"
-  grplot$alk.had.surQ3 +
-  labs(subtitle=figName) +
-  ggRunName() + ggRunNameSize(6)
-ggsave(paste(dirFigs,figName, sep="/"), device="ps")
+## figName <- "growth_had_survQ3.ps"
+##   grplot$alk.had.surQ3 +
+##   labs(subtitle=figName) +
+##   ggRunName() + ggRunNameSize(6)
+## ggsave(paste(dirFigs,figName, sep="/"), device="ps")
 
 ## tmp <- plot(fit,data = 'stockdist')
 ##   names(tmp)
