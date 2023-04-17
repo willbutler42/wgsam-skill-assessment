@@ -6,8 +6,8 @@ library(gridExtra)
 ## rm(list=ls())
 
 source("../../utils/ggdata_coverage.R")
-source("../../add_captionModel.R")
-source("../../ggplot_AgeLenDistributionStock.R")
+source("../../utils/add_captionModel.R")
+source("../../utils/ggplot_AgeLenDistributionStock.R")
 
 ## setwd(gd$dir)
 
