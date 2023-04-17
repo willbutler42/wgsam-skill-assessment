@@ -1,0 +1,103 @@
+; gadget printfile, created in 2023-04-15
+[component]
+type	likelihoodsummaryprinter
+printfile	WGTS2/out.fit/likelihoodsummary
+;
+[component]
+type	likelihoodprinter
+likelihood	alk.cod.surQ1
+printfile	WGTS2/out.fit/alk.cod.surQ1
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.cod.com
+printfile	WGTS2/out.fit/ldist.cod.com
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.cod.surQ1
+printfile	WGTS2/out.fit/ldist.cod.surQ1
+;
+[component]
+type	likelihoodprinter
+likelihood	ldist.cod.surQ3
+printfile	WGTS2/out.fit/ldist.cod.surQ3
+;
+[component]
+type	likelihoodprinter
+likelihood	siQ1.cod
+printfile	WGTS2/out.fit/siQ1.cod
+;
+[component]
+type	likelihoodprinter
+likelihood	siQ3.cod
+printfile	WGTS2/out.fit/siQ3.cod
+;
+[component]
+type	stockstdprinter
+stockname	cod
+printfile	WGTS2/out.fit/cod.std
+printatstart 1
+yearsandsteps	all	1
+;
+[component]
+type	stockprinter
+stocknames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.allages.agg
+lenaggfile	WGTS2/print.aggfiles/cod.len.agg
+printfile	WGTS2/out.fit/cod.full
+printatstart	1
+yearsandsteps	all	1
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ1cod survQ3cod comcod
+preynames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.age.agg
+lenaggfile	WGTS2/print.aggfiles/cod.alllen.agg
+printfile	WGTS2/out.fit/cod.prey
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ1cod
+preynames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.allages.agg
+lenaggfile	WGTS2/print.aggfiles/cod.len.agg
+printfile	WGTS2/out.fit/cod.prey.survQ1cod
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	survQ3cod
+preynames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.allages.agg
+lenaggfile	WGTS2/print.aggfiles/cod.len.agg
+printfile	WGTS2/out.fit/cod.prey.survQ3cod
+yearsandsteps	all all
+;
+[component]
+type	predatorpreyprinter
+predatornames	comcod
+preynames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.allages.agg
+lenaggfile	WGTS2/print.aggfiles/cod.len.agg
+printfile	WGTS2/out.fit/cod.prey.comcod
+yearsandsteps	all all
+;
+[component]
+type	stockprinter
+stocknames	cod
+areaaggfile	WGTS2/print.aggfiles/cod.area.agg
+ageaggfile	WGTS2/print.aggfiles/cod.rec.age.agg
+lenaggfile	WGTS2/print.aggfiles/cod.alllen.agg
+printfile	WGTS2/out.fit/cod.recruitment
+printatstart	0
+yearsandsteps	all 4
+;
+;
