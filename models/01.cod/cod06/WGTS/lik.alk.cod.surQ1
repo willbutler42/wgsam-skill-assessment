@@ -1,0 +1,114 @@
+; Gadget version 2.3.9 running on SLU-RSERVER02 Sat Apr 15 09:00:25 2023
+; Listing of the switches used in the current Gadget run
+cod.Linf	codgrowergrowthcalcHmodelvariable	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.k	codgrowergrowthcalcHmodelvariable	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.walpha	codgrowergrowthcalcHmodelvariable	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.wbeta	codgrowergrowthcalcHmodelvariable	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.bbin	codgrower	
+cod.init.scalar	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	
+cod.recl	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codinitialcondmeandata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.rec.scalar	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.rec.40	codrenewaldata	
+cod.rec.sd	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	codrenewaldata	
+cod.rec.41	codrenewaldata	
+cod.rec.42	codrenewaldata	
+cod.rec.43	codrenewaldata	
+cod.rec.44	codrenewaldata	
+cod.rec.45	codrenewaldata	
+cod.rec.46	codrenewaldata	
+cod.rec.47	codrenewaldata	
+cod.rec.48	codrenewaldata	
+cod.rec.49	codrenewaldata	
+cod.rec.50	codrenewaldata	
+cod.rec.51	codrenewaldata	
+cod.rec.52	codrenewaldata	
+cod.rec.53	codrenewaldata	
+cod.rec.54	codrenewaldata	
+cod.rec.55	codrenewaldata	
+cod.rec.56	codrenewaldata	
+cod.rec.57	codrenewaldata	
+cod.rec.58	codrenewaldata	
+cod.rec.59	codrenewaldata	
+cod.rec.60	codrenewaldata	
+cod.rec.61	codrenewaldata	
+cod.rec.62	codrenewaldata	
+cod.rec.63	codrenewaldata	
+cod.rec.64	codrenewaldata	
+cod.rec.65	codrenewaldata	
+cod.rec.66	codrenewaldata	
+cod.rec.67	codrenewaldata	
+cod.rec.68	codrenewaldata	
+cod.rec.69	codrenewaldata	
+cod.rec.70	codrenewaldata	
+cod.rec.71	codrenewaldata	
+cod.rec.72	codrenewaldata	
+cod.rec.73	codrenewaldata	
+cod.rec.74	codrenewaldata	
+cod.rec.75	codrenewaldata	
+cod.rec.76	codrenewaldata	
+cod.rec.77	codrenewaldata	
+cod.rec.78	codrenewaldata	
+cod.rec.79	codrenewaldata	
+cod.rec.80	codrenewaldata	
+cod.rec.81	codrenewaldata	
+cod.rec.82	codrenewaldata	
+cod.rec.83	codrenewaldata	
+cod.rec.84	codrenewaldata	
+cod.rec.85	codrenewaldata	
+cod.rec.86	codrenewaldata	
+cod.rec.87	codrenewaldata	
+cod.rec.88	codrenewaldata	
+cod.rec.89	codrenewaldata	
+cod.rec.90	codrenewaldata	
+cod.rec.91	codrenewaldata	
+cod.rec.92	codrenewaldata	
+cod.rec.93	codrenewaldata	
+cod.rec.94	codrenewaldata	
+cod.rec.95	codrenewaldata	
+cod.rec.96	codrenewaldata	
+cod.rec.97	codrenewaldata	
+cod.rec.98	codrenewaldata	
+cod.rec.99	codrenewaldata	
+cod.rec.100	codrenewaldata	
+cod.rec.101	codrenewaldata	
+cod.rec.102	codrenewaldata	
+cod.rec.103	codrenewaldata	
+cod.rec.104	codrenewaldata	
+cod.rec.105	codrenewaldata	
+cod.rec.106	codrenewaldata	
+cod.rec.107	codrenewaldata	
+cod.rec.108	codrenewaldata	
+cod.rec.109	codrenewaldata	
+cod.rec.110	codrenewaldata	
+cod.rec.111	codrenewaldata	
+cod.rec.112	codrenewaldata	
+cod.rec.113	codrenewaldata	
+cod.rec.114	codrenewaldata	
+cod.rec.115	codrenewaldata	
+cod.rec.116	codrenewaldata	
+cod.rec.117	codrenewaldata	
+cod.rec.118	codrenewaldata	
+cod.rec.119	codrenewaldata	
+cod.rec.120	codrenewaldata	
+cod.surQ1.alpha	fleetsurvQ1codpredatorsurvQ1codsuitabilityforcodmodelvariable	
+cod.surQ1.l50	fleetsurvQ1codpredatorsurvQ1codsuitabilityforcodmodelvariable	
+cod.surQ3.alpha	fleetsurvQ3codpredatorsurvQ3codsuitabilityforcodmodelvariable	
+cod.surQ3.l50	fleetsurvQ3codpredatorsurvQ3codsuitabilityforcodmodelvariable	
+cod.com.alpha	fleetcomcodpredatorcomcodsuitabilityforcodmodelvariable	
+cod.com.l50	fleetcomcodpredatorcomcodsuitabilityforcodmodelvariable	
+;
+; Listing of the likelihood components used in the current Gadget run
+;
+; Component	Type	Weight
+alk.cod.surQ1	3	2013.69
+ldist.cod.com	3	0.220119
+ldist.cod.surQ1	3	0.113404
+ldist.cod.surQ3	3	0.118948
+siQ1.cod	1	0.819672
+siQ3.cod	1	1.07308
+understocking	2	10
+bounds	8	10
+;
+; Listing of the output from the likelihood components for the current Gadget run
+;
+0	   109.902    19.4451      0.009          3    1.81689     0.0001     57.983      10000    10.1422    3.62754    17.9696    16.0646    16.1588    15.8759    16.8122    16.8836    16.0738    16.4744    20.8116    13.7837    21.3392    17.1681    21.6876    22.5679    22.8491    28.9541     22.504    36.2424    10.1497    37.6232    25.7755    21.4686    23.5699    36.0594    13.1334    44.2901    15.0596    36.7653    21.8343     35.371    39.1176    29.2277    32.9949    44.1051    36.1181    36.6586    47.8135    34.8733    39.3224    33.3096    38.5434    40.7101    43.3546    50.9183    40.1542    51.1551    37.3804    43.4393    51.7975    54.4058    40.7707    50.5988    49.8062    53.9914      54.74    55.8325    62.4834    64.1985    58.4783     75.641    63.7242    66.5954    85.0501     63.356     86.282    88.5943    76.7401    66.5121    91.3439    99.9968    78.3786    99.9977    99.9986    99.9972    99.9948    99.9958    99.9982    99.9978    99.9982     99.995    1.99995    51.7355    1.87138    20.4754    2.99989    70.0007 		  0.5395    1.541     0.49    6.078    1.395    1.183        0        0 		   1090.00582694558
