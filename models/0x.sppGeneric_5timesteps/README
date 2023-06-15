@@ -1,0 +1,4 @@
+experiment using 5 unequal timesteps
+notimesteps	5	3	2	3	2	2
+
+this would be a possible alternative if one wants to use data at subannual resolution (ie catch, lenDist, ageDist, wgt@age) provided by mskeyrun in 5 timesteps
