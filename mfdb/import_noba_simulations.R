@@ -1,10 +1,10 @@
 ### ---------------------------------------------------
 ## Import mskeyrun data into mfdb
 ##
-## - CATCHES ::simCatchIndex
-## - CATCH LENGTH DISTRIBUTIONS ::simFisheryLencomp
-## - CATCH AGE DISTRIBUTIONS SUBANNUAL ::simFisheryAgecompSubannual
-## - CATCH WGT@AGE ::simFisheryWtatAge
+## - CATCHES ::simCatchIndex  ---> simCatchIndexSubannual
+## - CATCH LENGTH DISTRIBUTIONS ::simFisheryLencomp ---> simFisheryLencompSubannual
+## - CATCH AGE DISTRIBUTIONS :: simFisheryAgecomp  ---> simFisheryAgecompSubannual
+## - CATCH WGT@AGE ::simFisheryWtatAge  ---> simFisheryWtatAgeSubannual
 ## - SURVEY INDICES ::simSurveyIndex
 ## - SURVEY LENGTH DISTRIBUTIONS ::simSurveyLencomp
 ## - SURVEY AGE DISTRIBUTIONS ::simSurveyAgecomp
@@ -19,6 +19,7 @@ library(tidyverse)
 library(mfdb)
 library(mskeyrun)
 library(ggplot2)
+library(patchwork)
 
 rm(list=ls())
 
@@ -29,8 +30,11 @@ mdb <- mfdb('Barents', db_params=list(dbname="noba"))
 # 11 spp list with extra biological data
 sppLookup <- data.frame(nobaSpp = c("BWH","CAP","GRH","HAD","LRD","MAC","NCO","PCO","RED","SAI","SSH"),
                         mfdbSpp = c("WHB","CAP","GLH","HAD","PLA","MAC","COD","POC","RED","SAI","HER"),
-                        ageGrpSize = c(1,1,2,2,2,2,2,2,4,2,2))
-sppList <- left_join(simBiolPar, sppLookup %>% rename(Code=nobaSpp))
+                        ageGrpSize = c(1,1,2,2,2,2,2,1,4,2,2))
+sppList <- left_join(simBiolPar, sppLookup %>% rename(Code=nobaSpp))##  %>%
+    ## mutate(RecruitMonthAdj = ifelse(mfdbSpp == "CAP", 12, RecruitMonth)) %>% # recr in Feb, recr contribution to diet in step1
+    ## mutate(RecruitMonthAdj = ifelse(mfdbSpp == "RED", 6, RecruitMonth)) %>% # move recr May -> Jun to avoid issues with recl negative (it remains in the same Q)
+    ## mutate(RecruitMonth2 = ifelse(RecruitMonthAdj > 12, RecruitMonthAdj-12, RecruitMonthAdj))
     
 # name simulation
 simName <- unique(simCatchIndex$ModSim)
@@ -54,26 +58,20 @@ mfdb_import_cs_taxonomy(mdb, "index_type", # BTS survey indices by species
                         select(name))
 
 # ---------------------------------------------------
-# IMPORT CATCHES
+# IMPORT CATCHES SUBANNUAL
 # ---------------------------------------------------
-tmp <- simCatchIndex %>%
+tmp <- simCatchIndexSubannual %>%
     ## filter(variable=="catch")
     mutate(units=NULL) %>%
+    spread(variable,value) %>%
     left_join(sppList) %>%
-    spread(variable,value)
-tmp <- expand.grid(year=sort(unique(tmp$year)),
-                    step=1:12) %>%
-    full_join(tmp) %>%
-    mutate(catch = catch/12) %>% # split the catches equally among months
-    ## mutate(catch = catch/4) %>% # split the catches equally among quarters
-    ## mutate(month = step*3-1) %>% # assign month as mid-quarter
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
     data_source = paste0('catches_',simName),
     data.frame(
         year = tmp$year,
-        month = tmp$step,
+        month = tmp$fishMonth,
         areacell = tmp$area,
         species = tmp$mfdbSpp,
         sampling_type = 'LND',
@@ -91,20 +89,32 @@ mfdb_import_survey(mdb,
 ## aggdata[1:4,]
 ## ggplot(aggdata) + geom_line(aes(year,total_weight)) + facet_wrap(~species, scale="free_y")
 
+## aggdata2 <- mfdb_sample_totalweight(mdb, c('species','data_source'), list(
+##     timestep        = mfdb_unaggregated(),
+##     year            = 1:99,
+##     species         = mfdb_unaggregated(), 
+##     sampling_type   = 'LND',
+##     data_source     = paste0('catches_',simName)))[[1]]
+## aggdata2[1:4,]
+## ggplot(aggdata2 %>% mutate(year=year+(step/5-0.1))) + geom_line(aes(year,total_weight)) + facet_wrap(~species, scale="free_y")
+
+## g1 <- ggplot(aggdata) + geom_bar(aes(year,total_weight), stat="identity") + facet_wrap(~species, scale="free_y")
+## g2 <- ggplot(aggdata2 %>% mutate(step=as.factor(step))) + geom_bar(aes(year,total_weight,fill=step), position="stack", stat="identity") + facet_wrap(~species, scale="free_y")
+## g1 + g2 + plot_layout(ncol=1)
+
+
 # ---------------------------------------------------
-# IMPORT CATCH LENGTH DISTRIBUTIONS
+# IMPORT CATCH LENGTH DISTRIBUTIONS SUBANNUAL
 # ---------------------------------------------------
-tmp <- simFisheryLencomp %>%
-    mutate(units=NULL) %>%
+tmp <- simFisheryLencompSubannual %>%
     left_join(sppList) %>%
-    mutate(month = 6) %>% # assign month as approx mid-year
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
     data_source = paste0('ldist_catch_',simName),
     data.frame(
         year = tmp$year,
-        month = tmp$month,
+        month = tmp$fishMonth,
         areacell = tmp$area,
         species = tmp$mfdbSpp,
         sampling_type = 'LND',
@@ -112,26 +122,6 @@ mfdb_import_survey(mdb,
         count = tmp$value,
         stringsAsFactors = TRUE))
 
-## # ---------------------------------------------------
-## # IMPORT CATCH AGE DISTRIBUTIONS ANNUAL *** YEAR DEFINITION INCONSISTENT AMONG SPECIES *** 
-## # ---------------------------------------------------
-## tmp <- simFisheryAgecomp %>%
-##     mutate(units=NULL) %>%
-##     left_join(sppList) %>%
-##     mutate(month = 6) %>% # assign month as approx mid-year
-##     mutate(area = "noba_area")
-
-## mfdb_import_survey(mdb,
-##     data_source = paste0('adist_catch_',simName),
-##     data.frame(
-##         year = tmp$year,
-##         month = tmp$month,
-##         areacell = tmp$area,
-##         species = tmp$mfdbSpp,
-##         sampling_type = 'LND',
-##         age = tmp$age,
-##         count = tmp$value,
-##         stringsAsFactors = TRUE))
 
 # ---------------------------------------------------
 # IMPORT CATCH AGE DISTRIBUTIONS SUBANNUAL
@@ -159,26 +149,36 @@ mfdb_import_survey(mdb,
         count = tmp$value,
         stringsAsFactors = TRUE))
 
+
 # ---------------------------------------------------
-# IMPORT CATCH WGT@AGE
+# IMPORT CATCH WGT@AGE SUBANNUAL
 # ---------------------------------------------------
-tmp <- simFisheryWtatAge %>%
-    mutate(units=NULL) %>%
-    left_join(sppList) %>%
-    mutate(month = 6) %>% # assign month as approx mid-year
+tmp <- simFisheryWtatAgeSubannual %>%
+    left_join(sppList %>% select(ModSim,Code,mfdbSpp,SpawnMonth,RecruitMonth)) %>%
+    # add age calendar (birthday 1 Jan)
+    mutate(ageCal = ifelse(RecruitMonth <= 12 & fishMonth >= RecruitMonth, age-1,
+                    ifelse((RecruitMonth >= 13 & RecruitMonth <= 24) & fishMonth < (RecruitMonth-12), age+1, age))) %>% # CAP, GLH (PCO not in the catches)
     mutate(area = "noba_area")
+
+## tmp %>% select(mfdbSpp,fishMonth,age,ageCal) %>% unique() %>% data.frame()
+## g1 <- ggplot(tmp %>% filter(mfdbSpp=="COD" & year %in% 90)) + geom_point(aes(fishMonth,value)) + facet_grid(year~age)
+## g2 <- ggplot(tmp %>% filter(mfdbSpp=="COD" & year %in% 90:92)) + geom_point(aes(fishMonth,value)) + facet_grid(year~ageCal)
+## g1 <- ggplot(tmp %>% filter(mfdbSpp=="COD")) + geom_boxplot(aes(as.factor(fishMonth),value)) + facet_grid(~age)
+## g2 <- ggplot(tmp %>% filter(mfdbSpp=="COD")) + geom_boxplot(aes(as.factor(fishMonth),value)) + facet_grid(~ageCal)
+## g1 + g2 + plot_layout(ncol=1)
 
 mfdb_import_survey(mdb,
     data_source = paste0('wgtAge_catch_',simName),
     data.frame(
         year = tmp$year,
-        month = tmp$month,
+        month = tmp$fishMonth,
         areacell = tmp$area,
         species = tmp$mfdbSpp,
         sampling_type = 'LND',
         age = tmp$age,
         weight = tmp$value/1000, # convert g2kg
         stringsAsFactors = TRUE))
+
 
 # ---------------------------------------------------
 # IMPORT SURVEY INDICES
@@ -304,7 +304,7 @@ mfdb_import_survey(mdb,
         stringsAsFactors = TRUE))
 
 # ---------------------------------------------------
-# IMPORT SURVEY ALK *** AGES TO BE CORRECTED FOR CALENDAR YEAR
+# IMPORT SURVEY ALK *** IS AGE CORRECTION FOR CALENDAR YEAR VALID FOR AgeGrp?
 # ---------------------------------------------------
 tmp <- simSurveyAgeLencomp %>%
     mutate(units=NULL) %>%
@@ -314,6 +314,9 @@ tmp <- simSurveyAgeLencomp %>%
     left_join(simSurveyInfo %>%
               select(survey,survMonth) %>%
               unique()) %>%
+    # add age calendar (birthday 1 Jan)
+    mutate(ageCal = ifelse(RecruitMonth <= 12 & survMonth >= RecruitMonth, age-1,
+                  ifelse((RecruitMonth >= 13 & RecruitMonth <= 24) & survMonth < (RecruitMonth-12), age+1, age))) %>% # CAP, GLH (PCO not in the catches)
     mutate(area = "noba_area")
    
 mfdb_import_survey(mdb,
@@ -325,7 +328,7 @@ mfdb_import_survey(mdb,
         species = tmp$mfdbSpp,
         sampling_type = 'RES',
         length = tmp$lenbin,
-        age = tmp$age,
+        age = tmp$ageCal,
         count = tmp$value,
         stringsAsFactors = TRUE))
 
@@ -338,6 +341,9 @@ tmp <- simSurveyWtatAge %>%
     left_join(simSurveyInfo %>%
               select(survey,survMonth) %>%
               unique()) %>%
+    # add age calendar (birthday 1 Jan)
+    mutate(ageCal = ifelse(RecruitMonth <= 12 & survMonth >= RecruitMonth, age-1,
+                    ifelse((RecruitMonth >= 13 & RecruitMonth <= 24) & survMonth < (RecruitMonth-12), age+1, age))) %>% # CAP, GLH (PCO not in the catches)
     mutate(area = "noba_area")
 
 mfdb_import_survey(mdb,
@@ -348,7 +354,7 @@ mfdb_import_survey(mdb,
         areacell = tmp$area,
         species = tmp$mfdbSpp,
         sampling_type = 'RES',
-        age = tmp$age,
+        age = tmp$ageCal,
         weight = tmp$value/1000, # convert g2kg
         stringsAsFactors = TRUE))
 
@@ -454,8 +460,8 @@ tmp <- simStartPars %>%
     mutate(units=NULL) %>%
     filter(variable == "AvgRec") %>%
     left_join(sppList) %>%
-    mutate(age = 0) %>% # recruitment assumed at age0 ***CHECK
-    mutate(year=39, month = 1) %>% # use initial year -1 to store avg recr
+    mutate(age = cut(RecruitMonth, breaks=c(1,12,24,36), labels=0:2, include.lowest=T)) %>% # recruitment assumed at age0 ***CHECK
+    mutate(year=1, month = 1) %>% # use year1 to store avg recr
     mutate(area = "noba_area")
    
 mfdb_import_survey(mdb,
