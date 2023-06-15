@@ -4,6 +4,7 @@
 ## - CATCHES ::simCatchIndex  ---> simCatchIndexSubannual
 ## - CATCH LENGTH DISTRIBUTIONS ::simFisheryLencomp ---> simFisheryLencompSubannual
 ## - CATCH AGE DISTRIBUTIONS :: simFisheryAgecomp  ---> simFisheryAgecompSubannual
+## - CATCH ALK :: simFisheryAgeLencomp
 ## - CATCH WGT@AGE ::simFisheryWtatAge  ---> simFisheryWtatAgeSubannual
 ## - SURVEY INDICES ::simSurveyIndex
 ## - SURVEY LENGTH DISTRIBUTIONS ::simSurveyLencomp
@@ -122,6 +123,20 @@ mfdb_import_survey(mdb,
         count = tmp$value,
         stringsAsFactors = TRUE))
 
+## g1 <- ggplot(simFisheryLencompSubannual %>% mutate(fishMonth=as.factor(fishMonth)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##     geom_line(aes(lenbin,value,col=fishMonth)) +
+##     facet_grid(~year)
+## g2 <- ggplot(simFisheryLencompSubannual %>% mutate(fishMonth=as.factor(fishMonth)) %>% group_by(Code,year,fishMonth,lenbin) %>% summarise(value=sum(value)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##     geom_line(aes(lenbin,value,col=fishMonth)) +
+##     facet_grid(~year)
+## g3 <- ggplot(simFisheryLencompSubannual %>% mutate(fishMonth=as.factor(fishMonth)) %>% mutate(lenbinGrp=cut(lenbin,seq(1,202,3),seq(2,200,3))) %>% mutate(lenbinGrp=as.numeric(as.character(lenbinGrp))) %>% group_by(Code,year,fishMonth,lenbinGrp) %>% summarise(value=sum(value)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##     geom_line(aes(lenbinGrp,value,col=fishMonth)) +
+##     facet_grid(~year)
+## g4 <- ggplot(simFisheryLencompSubannual %>% group_by(Code,year,lenbin) %>% summarise(value=sum(value)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##     geom_line(aes(lenbin,value)) +
+##     facet_grid(~year)
+## g1 + g2 + g3 + g4 + plot_layout(ncol=1)
+## ggsave("lenDist_comm_cod.png")
 
 # ---------------------------------------------------
 # IMPORT CATCH AGE DISTRIBUTIONS SUBANNUAL
@@ -148,6 +163,15 @@ mfdb_import_survey(mdb,
         age = tmp$ageCal,
         count = tmp$value,
         stringsAsFactors = TRUE))
+
+## g1 <- ggplot(simFisheryAgecompSubannual %>% group_by(Code,year,fishMonth,age) %>% summarise(value=sum(value)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##     geom_bar(aes(age,value), stat="identity") +
+##     facet_grid(~year)
+## g2 <- ggplot(simFisheryLencompSubannual %>% group_by(Code,year,lenbin) %>% summarise(value=sum(value)) %>% filter(Code=="NCO") %>% filter(year %in% c(50,70,90,110))) +
+##       geom_line(aes(lenbin,value)) +
+##       facet_grid(~year)
+## g1 + g2 + plot_layout(ncol=1)
+## ggsave("ageVSlenDist_comm_cod.png")
 
 
 # ---------------------------------------------------
@@ -179,6 +203,32 @@ mfdb_import_survey(mdb,
         weight = tmp$value/1000, # convert g2kg
         stringsAsFactors = TRUE))
 
+## # ---------------------------------------------------
+## # IMPORT CATCH ALK *** AGE IS NOT CORRECTED FOR CALENDAR YEAR *** UNCLEAR HOW THE AGE AND YEAR CONCEPT LINK HERE
+## # ---------------------------------------------------
+## tmp <- simFisheryAgeLencomp %>%
+##     mutate(units=NULL) %>%
+##     left_join(sppList %>% select(ModSim,Code,mfdbSpp,SpawnMonth,RecruitMonth,ageGrpSize)) %>%
+##     mutate(month = 6) %>% # assign month as approx mid-year
+##     mutate(age = ifelse(ageGrpSize == 2, agecl*2-1, # assign the first age in the age class
+##                  ifelse(ageGrpSize == 4, agecl*4-1, agecl))) %>%                        
+##     # add age calendar (birthday 1 Jan)
+##     mutate(ageCal = ifelse(RecruitMonth <= 12 & survMonth >= RecruitMonth, age-1,
+##                     ifelse((RecruitMonth >= 13 & RecruitMonth <= 24) & survMonth < (RecruitMonth-12), age+1, age))) %>% # CAP, GLH (PCO not in the catches)
+##     mutate(area = "noba_area")
+
+## mfdb_import_survey(mdb,
+##     data_source = paste0('aldist_catch_',simName),
+##     data.frame(
+##         year = tmp$year,
+##         month = tmp$month,
+##         areacell = tmp$area,
+##         species = tmp$mfdbSpp,
+##         sampling_type = 'LND',
+##         length = tmp$lenbin,
+##         age = tmp$ageCal,
+##         count = tmp$value,
+##         stringsAsFactors = TRUE))
 
 # ---------------------------------------------------
 # IMPORT SURVEY INDICES
