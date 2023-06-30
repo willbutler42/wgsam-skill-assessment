@@ -20,46 +20,55 @@ tmp <- gadget.iterative(rew.sI=TRUE,
                         optinfofile='optinfofile',
                         wgts='WGTS')
 
-# --------
-## change the likelihood weight for the survey indicex x100 and refit the model
-lkh <- read.gadget.file("./", file_name="WGTS/likelihood.final", file_type="likelihood")
-i <- which(sapply(lkh,function(x){x$name}) == "siQ1.had")
-lkh[[i]]$weight <- lkh[[i]]$weight * 100
-i <- which(sapply(lkh,function(x){x$name}) == "siQ3.had")
-lkh[[i]]$weight <- lkh[[i]]$weight * 100
-attributes(lkh)$file_name <- "likelihood.final1"
-lkh %>%
-    write.gadget.file(".")
-
-main <- read.gadget.file("./", file_name="main", file_type="main")
-main[[6]]$likelihoodfiles <- "likelihood.final1"
-attributes(main)$file_name <- "main2"
-main %>%
-    write.gadget.file(".")
-
-callGadget(l=1, i='params.in', p='params.final2', main='main2', opt='optinfofile')
-params <- read.gadget.parameters('params.final2')
-params$optimise <- 0
-write.gadget.parameters(params,file='params.final20')
-
-tmp <- gadget.iterative(rew.sI=TRUE,
-                        grouping=list(
-                          sind=c('siQ1.had','siQ3.had')),
-                        params.file='params.final20',
-                        optinfofile='optinfofile',
-                        main = "main2",
-                        wgts='WGTS2')
-
-# --------
-fit <- gadget.fit(main="WGTS2/main.final", wgts="WGTS2",
+fit <- gadget.fit(main="WGTS/main.final", wgts="WGTS",
                   f.age.range=data.frame(stock=c("had"),
                                          age.min=c(6),
                                          age.max=c(15)),
                   recruitment_step_age=data.frame(stock=c("had"),
                                                   age=c(0),
-                                                  step=c(4)))
+                                                  step=c(5)))
 
-## load("WGTS/WGTS.Rdata")
+# -------------
+## ## Eventually change the likelihood weight for the survey indicex x100 and refit the model
+## lkh <- read.gadget.file("./", file_name="WGTS/likelihood.final", file_type="likelihood")
+## i <- which(sapply(lkh,function(x){x$name}) == "siQ1.had")
+## lkh[[i]]$weight <- lkh[[i]]$weight * 100
+## i <- which(sapply(lkh,function(x){x$name}) == "siQ3.had")
+## lkh[[i]]$weight <- lkh[[i]]$weight * 100
+## attributes(lkh)$file_name <- "likelihood.final1"
+## lkh %>%
+##     write.gadget.file(".")
+
+## main <- read.gadget.file("./", file_name="main", file_type="main")
+## main[[6]]$likelihoodfiles <- "likelihood.final1"
+## attributes(main)$file_name <- "main2"
+## main %>%
+##     write.gadget.file(".")
+
+## callGadget(l=1, i='params.in', p='params.final2', main='main2', opt='optinfofile')
+## params <- read.gadget.parameters('params.final2')
+## params$optimise <- 0
+## write.gadget.parameters(params,file='params.final20')
+
+## tmp <- gadget.iterative(rew.sI=TRUE,
+##                         grouping=list(
+##                           sind=c('siQ1.had','siQ3.had')),
+##                         params.file='params.final20',
+##                         optinfofile='optinfofile',
+##                         main = "main2",
+##                         wgts='WGTS2')
+
+## fit <- gadget.fit(main="WGTS2/main.final", wgts="WGTS2",
+##                   f.age.range=data.frame(stock=c("had"),
+##                                          age.min=c(6),
+##                                          age.max=c(15)),
+##                   recruitment_step_age=data.frame(stock=c("had"),
+##                                                   age=c(0),
+##                                                   step=c(5)))
+
+# --------
+
+## load("WGTS2/WGTS.Rdata")
 ## fit <- out
 
 # ------------------------------------------
@@ -261,12 +270,15 @@ system(paste("psmerge $(ls ",dirFigs,"/*.ps) > ",dirFigs,"/figs_all.ps ; ps2pdf 
 # -------------------------------------------
 # Comparison among runs (see for more plots in vendace/compare_runs.R
 
-load("WGTS/WGTS.Rdata")
+## load("../../03.haddock/had05/WGTS2/WGTS.Rdata")
+load("../had01_1cm/WGTS2/WGTS.Rdata")
 fit1 <- out
-load("WGTS2/WGTS.Rdata")
+load("../had01_2cm/WGTS2/WGTS.Rdata")
 fit2 <- out
+load("../had01_3cm/WGTS2/WGTS.Rdata")
+fit3 <- out
 
-fitL <- bind.gadget.fit("fit1"=fit1, "fit2"=fit2)
+fitL <- bind.gadget.fit("fit1"=fit1, "fit2"=fit2, "fit3"=fit3)
 
 # SSB
 tmp <- fitL$res.by.year %>% filter(stock=="had") ## %>%
@@ -274,10 +286,10 @@ tmp <- fitL$res.by.year %>% filter(stock=="had") ## %>%
 tsb <- ggplot(tmp, aes(year,total.biomass,col=model)) + geom_line() + geom_point() +
     ylim(0,max(tmp$total.biomass)) + ylab("SSB")
 # Rec
-## tmp <- fitL$res.by.year %>% filter(stock=="sprimm") ## %>%
-##     ## filter(model %in% c("Singlesp","Multispp"))
-## rec.spr <- ggplot(tmp, aes(year,total.number,col=model)) + geom_line() + geom_point() +
-##         ylim(0,max(tmp$total.number)) + ylab("Number immature")
+tmp <- fitL$res.by.year %>% filter(stock=="had") ## %>%
+    ## filter(model %in% c("Singlesp","Multispp"))
+rec <- ggplot(tmp, aes(year,recruitment,col=model)) + geom_line() + geom_point() +
+    ylim(0,max(tmp$recruitment)) + ylab("Number immature")
 # F
 tmp <- fitL$res.by.year %>% filter(stock=="had") ## %>%
     ## filter(model %in% c("Singlesp","Multispp"))
@@ -286,7 +298,7 @@ fbar <- ggplot(tmp, aes(year,F,col=model)) + geom_line() + geom_point() +
 
 figName <- "standard_plot_comp_runs.ps"
 postscript(paste(dirFigs,figName, sep="/"))
-  grid.arrange(ssb.spr, ssb.her, ssb.had, rec.spr, rec.her, rec.had, fbar.spr, fbar.her, fbar.had)
+  grid.arrange(tsb, rec, fbar)
 dev.off()
 
 # compare survey indices
@@ -314,7 +326,7 @@ ggAgeDist(Gfit=fitL, compName="adist.had.surQ3", yrs=50:60)
 
 # selection pattern
 tmp <- fitL$suitability %>% filter(stock %in% c("had") & year == 80 &
-                                  step %in% ifelse(substring(fleet,1,6)=="survQ1",2,4))
+                                  step %in% ifelse(substring(fleet,1,6)=="survQ1",1,3))
 ggplot(tmp) + geom_line(aes(length,suit,group=model,col=model)) + facet_wrap(~fleet, scale="free_x")
 
 # compare LH scores
