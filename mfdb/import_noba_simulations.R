@@ -11,7 +11,8 @@
 ## - SURVEY AGE DISTRIBUTIONS ::simSurveyAgecomp
 ## - SURVEY ALK ::simSurveyAgeLencomp
 ## - SURVEY WGT@AGE ::simSurveyWtatAge
-## - DIET DATA ::simSurveyDietcomp
+## - DIET DATA BY AGE ::simSurveyDietcomp
+## - DIET DATA BY LEN ::simSurveyLenDietcomp
 ## - INITIAL POPULATION BY AGE ::simStartPars
 ## - AVERAGE RECRUITMENT ::simStartPars
 ## - INITIAL POPULATION AGE-LENGTH ::simStartPars
@@ -449,7 +450,7 @@ mfdb_import_species_taxonomy(mdb, data.frame(
     stringsAsFactors = FALSE))
 
 mfdb_import_stomach(mdb,
-                    data_source = paste0('dietWprop_',simName),
+                    data_source = paste0('dietWpropPredAge_',simName),
                     predator_data = data.frame(
                         stomach_name = tmpPred$predID,
                         year = tmpPred$year,
@@ -477,6 +478,57 @@ mfdb_import_stomach(mdb,
 ##                             data_source=paste0('dietWprop_',simName)))[[1]]
 ## ggplot(df %>% mutate(age=as.numeric(substring(age,4,6)))) + geom_bar(aes(age,ratio,fill=prey_species), stat="identity") + facet_grid(~step)
 ## ggplot(tmpPrey %>% filter(year==80 & age %in% 3:8, mfdbSpp=="COD")) + geom_bar(aes(age,value,fill=mfdbPrey), stat="identity") + facet_grid(~survMonth)
+
+# ---------------------------------------------------
+# IMPORT DIET DATA BY PRED LENGTH
+# ---------------------------------------------------
+tmp <- simSurveyLenDietcomp %>%
+    mutate(units=NULL) %>%
+    left_join(sppList %>% select(ModSim,Code,mfdbSpp,SpawnMonth,RecruitMonth)) %>%
+    left_join(simSurveyInfo %>%
+              select(survey,survMonth) %>%
+              unique()) %>%
+    mutate(predID = paste(mfdbSpp,year,survMonth,pdlencm,sep="_")) %>%
+    mutate(area = "noba_area")
+
+tmp <- sppList %>%
+    select(Name,mfdbSpp) %>%
+    rename(prey=Name, mfdbPrey=mfdbSpp) %>%
+    right_join(tmp) %>%
+    mutate(mfdbPrey = ifelse(is.na(mfdbPrey), "OTH", mfdbPrey)) %>%
+    group_by(ModSim,year,survMonth,area,survey,predID,mfdbSpp,pdlencm,mfdbPrey) %>%
+    summarise(value=sum(value))
+
+## ggplot(tmp %>% filter(survMonth==8 & year %in% c(60,80,100))) + geom_bar(aes(pdlencm,value,fill=mfdbPrey), stat="identity") + facet_grid(mfdbSpp~year)
+## ggplot(tmp %>% filter(mfdbSpp=="RED" & year %in% c(60,80,100))) + geom_bar(aes(pdlencm,value,fill=mfdbPrey), stat="identity") + facet_grid(survMonth~year)
+## ggplot(tmp %>% filter(mfdbSpp=="RED")) + geom_bar(aes(pdlencm,value,fill=mfdbPrey), stat="identity") + facet_wrap(survMonth~year)
+## ggplot(tmp %>% filter(mfdbSpp=="COD")) + geom_bar(aes(pdlencm,value,fill=mfdbPrey), stat="identity") + facet_wrap(survMonth~year)
+## p1 <- ggplot(tmp %>% filter(mfdbSpp=="COD" & year %in% c(60,80,100))) + geom_bar(aes(pdlencm,value,fill=mfdbPrey), stat="identity") + facet_grid(survMonth~year)
+## ggsave("cod_diet_len_NOBA_sacc_38.png", p1, device="png", width=12)
+
+tmpPred <- tmp %>%
+    select(predID,ModSim,survey,year,survMonth,area,mfdbSpp,pdlencm) %>%
+    unique()
+
+tmpPrey <- tmp
+
+mfdb_import_stomach(mdb,
+                    data_source = paste0('dietWpropPredLen_',simName),
+                    predator_data = data.frame(
+                        stomach_name = tmpPred$predID,
+                        year = tmpPred$year,
+                        month = tmpPred$survMonth,
+                        areacell = tmpPred$area,
+                        species = tmpPred$mfdbSpp,
+                        length = tmpPred$pdlencm,
+                        stringsAsFactors = TRUE),
+                    prey_data = data.frame(
+                        stomach_name = tmpPrey$predID,
+                        species = tmpPrey$mfdbPrey,
+                        weight = tmpPrey$value,
+                        ## length = 1, # only for convenience for the extraction
+                        count = 1, # =1 correspond to aggregated data
+                        stringsAsFactors = TRUE))
 
 # ---------------------------------------------------
 # IMPORT INITIAL POPULATION BY AGE
