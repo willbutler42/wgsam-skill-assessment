@@ -1,36 +1,41 @@
-# plot age and length distributions from the modelled population
+# plot age and length distributions from the modelled population (also multimodel but only LenDist)
 require(ggplot2)
 require(dplyr)
 require(tidyr)
 
-ggLenDistStk <- function(Gfit, stkName, yrs=NULL, biomass=FALSE, ...){
+ggLenDistStk <- function(Gfit, stkName, yrs=NULL, q=NULL, biomass=FALSE, ...){
 
-    tmp <- Gfit$out.fit[[paste(stkName,"full",sep=".")]]
+    tmp <- Gfit$stock.full
     
     if(!is.null(yrs)==TRUE){
         tmp <- filter(tmp, year %in% yrs)
     } else { NULL }
-    # at the moment only q=1 available
-    ## if(!is.null(q)==TRUE){
-    ##     tmp <- filter(tmp, step %in% q)
-    ## } else { NULL }
+    if(!is.null(q)==TRUE){
+        tmp <- filter(tmp, step %in% q)
+    } else { NULL }
 
-    tmp$len2 <- as.numeric(substring(tmp$length,4,8))
+    if(biomass==FALSE){
+        tmp$value <- tmp$number
+    } else {
+        tmp$value <- tmp$number * tmp$mean_weight
+    }
 
     # plot
-    if(biomass==FALSE){
-        ggplot(tmp, aes(len2,number)) +
-            geom_bar(stat="identity") +
-            facet_wrap(~year) +
-            NULL
+    if(is.null(tmp$model)){
+    tmp <- tmp %>% group_by(length,year,step) %>%
+               summarise(value=sum(value,na.rm=T))
+    ggplot(tmp, aes(length,value)) +
+        geom_bar(stat="identity", ...) +
+        facet_wrap(~year+step) +
+        NULL
     } else {
-        tmp$biomass <- tmp$number * tmp$mean_weight
-        ggplot(tmp, aes(len2,biomass)) +
-            geom_bar(stat="identity") +
-            facet_wrap(~year) +
-            NULL
-    }
-}
+    tmp <- tmp %>% group_by(length,model,year,step) %>%
+        summarise(value=sum(value,na.rm=T))
+    ggplot(tmp) +
+        geom_line(aes(length,value,col=model),...) +
+        facet_wrap(~year+step) +
+        NULL
+}}
 
 
 ggAgeDistStk <- function(Gfit, stkName, yrs=NULL, biomass=FALSE, ...){
