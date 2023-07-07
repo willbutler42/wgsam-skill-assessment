@@ -15,7 +15,7 @@ rm(list=ls())
 ## - gadget3 specific scripts are suffixed with '_g3'
 ## - gadget2 specific scripts are suffixed with '_g2'
 
-gadget_version <- 3
+gadget_version <- 2
 
 # 11 spp list with extra biological data
 sppLookup <- data.frame(nobaSpp = c("BWH","CAP","GRH","HAD","LRD","MAC","NCO","PCO","RED","SAI","SSH"),
@@ -28,7 +28,7 @@ sppLookup <- data.frame(nobaSpp = c("BWH","CAP","GRH","HAD","LRD","MAC","NCO","P
                         recScale = c(1e9,1e7,1e4,1e8,1e8,1e8,1e7,1e8,1e8,1e7,1e9))
 sppList <- left_join(simBiolPar, sppLookup %>% rename(Code=nobaSpp))
 
-spp <- "STK" # select species
+spp <- "HAD" # select species
 
 cat('\n## --------------\n\ngadget version:', gadget_version, '\nstock:', spp)
 
@@ -42,8 +42,8 @@ if (gadget_version == 2){
   } else {gd <- gadget_directory(dirName)}  
 }
 
-mdb <- mfdb('Barents', db_params=list(dbname="noba"))
-#mdb <- mfdb('../../mfdb/Barents.duckdb')
+#mdb <- mfdb('Barents', db_params=list(dbname="noba"))
+mdb <- mfdb('../../mfdb/Barents.duckdb')
 
 simName <- "NOBA_sacc_38"
 
@@ -156,6 +156,7 @@ if (gadget_version == 2){
   Sys.setenv(GADGET_WORKING_DIR=normalizePath(gd$dir))
   callGadget(s=1,log = 'init.log') #ignore.stderr = FALSE,
   
+  ## update the input parameters with sane initial guesses
   read.gadget.parameters(sprintf('%s/params.out',gd$dir)) %>% 
     init_guess(paste0(stock_names,'.rec.[0-9]'),1,0.1,100,1) %>%
     ## mutate(value = ifelse(switch == paste0(stock_names,'.rec.1'), 1e-4 * exp(init.rec$number), value),
@@ -207,7 +208,7 @@ if (gadget_version == 2){
   ## Set parameters, just copy values and ranges from above
   tmb_param <- 
     attr(tmb_model, 'parameter_template') %>% 
-    gadgetutils::g3_init_guess(paste0(stock_names,'.rec.[0-9]'),1,0.1,100,1) %>%
+    gadgetutils::g3_init_guess(paste0(stock_names,'.rec.[0-9]'),50,0.1,100,1) %>%
     ## mutate(value = ifelse(switch == paste0(stock_names,'.rec.1'), 1e-4 * exp(init.rec$number), value),
     ##        optimise = ifelse(switch == paste0(stock_names,'.rec.1'), 0, optimise)) %>%
     ## gadgetutils::g3_init_guess(paste0(stock_names,'.init.[0-9]'),1,0.001,1000,1) %>%

@@ -12,16 +12,16 @@ setwd("~/gadget-framework/wgsam-skill-assessment-fork")
 fixed_weights <- FALSE
 
 ## Directories
-base_dir <- 'models/CopyOf0x.sppGeneric'
+base_dir <- 'models/0x.sppGeneric'
 species_name <- 'had'
 vers <- paste0(species_name, '01_g3')
 
 ## Load model and parameters
-load(file = paste0('models/CopyOf0x.sppGeneric/', vers, '/tmb_model.Rdata'))
-load(file = paste0('models/CopyOf0x.sppGeneric/', vers, '/tmb_param.Rdata'))
+load(file = paste0('models/0x.sppGeneric/', vers, '/tmb_model.Rdata'))
+load(file = paste0('models/0x.sppGeneric/', vers, '/tmb_param.Rdata'))
 
 ## Options and settings for iterative
-cv_floor <- 0.008
+cv_floor <- 0
 
 ## Groupings for iterative re-weighting
 grouping <- list(sind = c(paste0('log_siQ1.', species_name),
@@ -68,7 +68,7 @@ if (fixed_weights){
   obj.fun <- gadget3::g3_tmb_adfun(tmb_model, tmb_param)
   
   ## Iterative
-  params_final <- gadgetutils::g3_iterative(file.path('models/CopyOf0x.sppGeneric', vers),
+  params_final <- gadgetutils::g3_iterative(file.path('models/0x.sppGeneric', vers),
                                             wgts = 'WGTS',
                                             model = tmb_model,
                                             params.in = tmb_param,

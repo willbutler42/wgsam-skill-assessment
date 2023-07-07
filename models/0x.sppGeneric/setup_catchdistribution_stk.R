@@ -1,8 +1,16 @@
-minage <- stk[[1]]$minage
-maxage <- stk[[1]]$maxage
-maxlength <- stk[[1]]$maxlength 
-minlength <- stk[[1]]$minlength
-dl <- 1
+if (gadget_version == 2){
+  minage <- stk[[1]]$minage
+  maxage <- stk[[1]]$maxage
+  maxlength <- stk[[1]]$maxlength 
+  minlength <- stk[[1]]$minlength
+  dl <- 1
+}else{
+  minage <- gadget3::g3_stock_def(single_stock, 'minage')
+  maxage <- gadget3::g3_stock_def(single_stock, 'maxage')
+  maxlength <- gadget3::g3_stock_def(single_stock, 'minlen') |> max()
+  minlength <- gadget3::g3_stock_def(single_stock, 'minlen') |> min()
+  dl <- gadget3::g3_stock_def(single_stock, 'minlen') |> diff() |> min()
+}
 
 ll <- mfdb_interval("all",c(minlength,maxlength),
                     open_ended = c("upper","lower"))
